@@ -54,6 +54,33 @@ internal class AnisearchConverterTest {
                 assertThat(result.title).isEqualTo("22/7: 8+3=?")
             }
         }
+
+        @Test
+        fun `no suffix for title`() {
+            tempDirectory {
+                // given
+                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
+                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
+                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
+                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
+                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
+                }
+
+                val testFile = loadTestResource("file_converter_tests/title/no_suffix_for_title.html")
+                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+
+                val converter = AnisearchConverter(
+                    config = testAnisearchConfig,
+                    relationsDir = tempDir,
+                )
+
+                // when
+                val result = converter.convert(testFile)
+
+                // then
+                assertThat(result.title).isEqualTo(".hack//G.U. Returner")
+            }
+        }
     }
 
     @Nested

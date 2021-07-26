@@ -63,10 +63,18 @@ public class AnisearchConverter(
     }
 
     private fun extractTitle(document: Document): Title {
-        return document.select("h1[id=htitle]")
+        var title = document.select("h1[id=htitle]")
             .select("span[itemprop=name]")
             .text()
             .trim()
+
+        if (title.isBlank()) {
+            title = document.select("h1[id=htitle]")
+                .text()
+                .trim()
+        }
+
+        return title
     }
 
     private fun extractEpisodes(document: Document): Episodes {

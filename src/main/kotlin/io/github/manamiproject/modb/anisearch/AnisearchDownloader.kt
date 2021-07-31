@@ -14,7 +14,7 @@ import io.github.manamiproject.modb.core.logging.LoggerDelegate
  * @param httpClient To actually download the anime data.
  */
 public class AnisearchDownloader(
-    private val config: MetaDataProviderConfig = AnisearchConfig,
+    private val config: MetaDataProviderConfig,
     private val httpClient: HttpClient = DefaultHttpClient(),
 ): Downloader {
 

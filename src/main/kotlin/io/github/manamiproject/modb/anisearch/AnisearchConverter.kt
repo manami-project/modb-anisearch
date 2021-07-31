@@ -1,5 +1,6 @@
 package io.github.manamiproject.modb.anisearch
 
+import io.github.manamiproject.modb.core.Json
 import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.config.MetaDataProviderConfig
 import io.github.manamiproject.modb.core.converter.AnimeConverter
@@ -34,19 +35,26 @@ public class AnisearchConverter(
     override fun convert(rawContent: String): Anime {
         val document = Jsoup.parse(rawContent)
 
-        val picture = extractPicture(document)
+        val jsonData = document.select("script[type=application/ld+json]")
+            .dataNodes()
+            .toString()
+            .trimStart('[')
+            .trimEnd(']')
+        val anisearchData = Json.parseJson<AnisearchData>(jsonData) ?: AnisearchData()
+
+        val picture = extractPicture(anisearchData, document)
         val sources = extractSourcesEntry(document)
         val id = config.extractAnimeId(sources.first())
 
         return Anime(
-            _title = extractTitle(document),
-            episodes = extractEpisodes(document),
+            _title = extractTitle(anisearchData, document),
+            episodes = extractEpisodes(anisearchData, document),
             type = extractType(document),
             picture = picture,
             thumbnail = findThumbnail(picture),
             status = extractStatus(document),
             duration = extractDuration(document),
-            animeSeason = extractAnimeSeason(document)
+            animeSeason = extractAnimeSeason(anisearchData)
         ).apply {
             addSources(sources)
             addSynonyms(extractSynonyms(document))
@@ -55,14 +63,22 @@ public class AnisearchConverter(
         }
     }
 
-    private fun extractPicture(document: Document): URI {
+    private fun extractPicture(anisearchData: AnisearchData, document: Document): URI {
+        if (anisearchData.image.isNotBlank()) {
+            return URI(anisearchData.image)
+        }
+
         val value = document.select("meta[property=og:image]")
                 .attr("content")
                 .trim()
         return URI(value)
     }
 
-    private fun extractTitle(document: Document): Title {
+    private fun extractTitle(anisearchData: AnisearchData, document: Document): Title {
+        if (anisearchData.name.isNotBlank()) {
+            return anisearchData.name
+        }
+
         var title = document.select("h1[id=htitle]")
             .select("span[itemprop=name]")
             .text()
@@ -77,15 +93,21 @@ public class AnisearchConverter(
         return title
     }
 
-    private fun extractEpisodes(document: Document): Episodes {
-        return document.select("ul[id=infodetails]")
+    private fun extractEpisodes(anisearchData: AnisearchData, document: Document): Episodes {
+        val value = document.select("ul[id=infodetails]")
             .select("span:matchesOwn(Episodes)")
-            .parents()
-            .first()!!
-            .ownText()
-            .trim()
-            .ifBlank { "0" }
-            .toInt()
+            .next()
+            .text()
+
+        if (value == "?") {
+            return 0
+        }
+
+        return when {
+            value == "?" -> 0
+            value.isInt() -> value.toInt()
+            else -> anisearchData.episodes // frontend shows ? whereas the json contains 1. So the json is fallback only
+        }
     }
 
     private fun extractType(document: Document): Anime.Type {
@@ -118,7 +140,7 @@ public class AnisearchConverter(
     }
 
     private fun extractStatus(document: Document): Anime.Status {
-        return when(val status = document.select("div[class=status]")?.first()?.ownText()?.trim()?.lowercase() ?: EMPTY) {
+        return when(val status = document.select("div[class=status]").first()?.ownText()?.trim()?.lowercase() ?: EMPTY) {
             "aborted" -> Anime.Status.UNKNOWN
             "completed" -> FINISHED
             "ongoing" -> ONGOING
@@ -158,11 +180,15 @@ public class AnisearchConverter(
         return Duration(value, unit)
     }
 
-    private fun extractAnimeSeason(document: Document): AnimeSeason {
-        val dateCreated = document.select("meta[itemprop=dateCreated]").attr("content") ?: EMPTY
+    private fun extractAnimeSeason(anisearchData: AnisearchData): AnimeSeason {
+        val date = anisearchData.startDate
+        if (date.isBlank()) {
+            return AnimeSeason()
+        }
+
+        val year = Regex("[0-9]{4}").find(date)!!.value.toInt()
         val fallback = "0"
-        val year = (Regex("[0-9]{4}").find(dateCreated)?.value?.ifBlank { fallback } ?: fallback).toInt()
-        val month = (Regex("-[0-9]{2}-").find(dateCreated)?.value?.replace(Regex("-"), EMPTY)?.ifBlank { fallback } ?: fallback).toInt()
+        val month = (Regex("-[0-9]{2}-").find(date)?.value?.replace(Regex("-"), EMPTY)?.ifBlank { fallback } ?: fallback).toInt()
 
         val season = when(month) {
             1, 2, 3 -> WINTER
@@ -222,4 +248,27 @@ public class AnisearchConverter(
             .select("a")
             .map { it.text().trim() }
     }
+}
+
+private data class AnisearchData(
+    val name: String = EMPTY,
+    val url: String = EMPTY,
+    val image: String = EMPTY,
+    val numberOfEpisodes: Any = EMPTY, // they mess up the type. They use both strings and integer for episodes
+    val startDate: String = EMPTY,
+) {
+    val episodes: Int
+        get() {
+            return when(numberOfEpisodes) {
+                is String -> {
+                    val trimmedValue = numberOfEpisodes.trim()
+                    when {
+                        trimmedValue.isInt() -> numberOfEpisodes.toInt()
+                        else -> 0
+                    }
+                }
+                is Int -> numberOfEpisodes
+                else -> throw IllegalStateException("Unknown type for numberOfEpisodes: [${numberOfEpisodes.javaClass}]")
+            }
+        }
 }

@@ -1,5 +1,6 @@
 package io.github.manamiproject.modb.anisearch
 
+import io.github.manamiproject.modb.anisearch.extensions.isInt
 import io.github.manamiproject.modb.core.Json
 import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.config.MetaDataProviderConfig

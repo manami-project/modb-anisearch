@@ -1095,6 +1095,33 @@ internal class AnisearchConverterTest {
         }
 
         @Test
+        fun `'on hold' is mapped to 'UNKNOWN'`() {
+            tempDirectory {
+                // given
+                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
+                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
+                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
+                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
+                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
+                }
+
+                val testFile = loadTestResource("file_converter_tests/status/on_hold.html")
+                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+
+                val converter = AnisearchConverter(
+                    config = testAnisearchConfig,
+                    relationsDir = tempDir,
+                )
+
+                // when
+                val result = converter.convert(testFile)
+
+                // then
+                assertThat(result.status).isEqualTo(Anime.Status.UNKNOWN)
+            }
+        }
+
+        @Test
         fun `no status is mapped to 'UNKNOWN'`() {
             tempDirectory {
                 // given

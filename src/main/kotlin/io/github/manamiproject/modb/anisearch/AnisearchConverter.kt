@@ -146,7 +146,7 @@ public class AnisearchConverter(
             "completed" -> FINISHED
             "ongoing" -> ONGOING
             "upcoming" -> UPCOMING
-            EMPTY -> Anime.Status.UNKNOWN
+            "on hold", EMPTY -> Anime.Status.UNKNOWN
             else -> throw IllegalStateException("Unmapped status [$status]")
         }
     }

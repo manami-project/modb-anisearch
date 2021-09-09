@@ -19,7 +19,7 @@ public class AnisearchDownloader(
 ): Downloader {
 
     override fun download(id: AnimeId, onDeadEntry: (AnimeId) -> Unit): String {
-        log.debug("Downloading [anisearchId={}]", id)
+        log.debug { "Downloading [anisearchId=$id]" }
 
         val response = httpClient.get(
             url = config.buildDataDownloadLink(id).toURL(),

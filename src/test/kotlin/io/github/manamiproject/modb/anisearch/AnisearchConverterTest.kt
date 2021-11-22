@@ -687,6 +687,33 @@ internal class AnisearchConverterTest {
                 assertThat(result.episodes).isEqualTo(1818)
             }
         }
+
+        @Test
+        fun `although not a double in json the number of episodes is deserialized to kotlin type double`() {
+            tempDirectory {
+                // given
+                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
+                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
+                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
+                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
+                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
+                }
+
+                val testFile = loadTestResource("file_converter_tests/episodes/type-is-double.html")
+                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+
+                val converter = AnisearchConverter(
+                    config = testAnisearchConfig,
+                    relationsDir = tempDir,
+                )
+
+                // when
+                val result = converter.convert(testFile)
+
+                // then
+                assertThat(result.episodes).isEqualTo(1)
+            }
+        }
     }
 
     @Nested

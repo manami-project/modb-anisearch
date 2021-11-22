@@ -269,6 +269,7 @@ private data class AnisearchData(
                     }
                 }
                 is Int -> numberOfEpisodes
+                is Double -> numberOfEpisodes.toInt()
                 else -> throw IllegalStateException("Unknown type for numberOfEpisodes: [${numberOfEpisodes.javaClass}]")
             }
         }

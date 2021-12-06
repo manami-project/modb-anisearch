@@ -43,10 +43,49 @@ internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by W
         val anisearchDownloader = AnisearchDownloader(testAnisearchConfig)
 
         // when
-        val result = anisearchDownloader.download(id = id.toAnimeId(), onDeadEntry = { shouldNotBeInvoked() })
+        val result = anisearchDownloader.download(id.toAnimeId()) {
+            shouldNotBeInvoked()
+        }
 
         // then
         assertThat(result).isEqualTo(responseBody)
+    }
+
+    @Test
+    fun `invokes lambda in case of a dead entry`() {
+        // given
+        val id = 1535
+
+        val testAnisearchConfig = object: MetaDataProviderConfig by MetaDataProviderTestConfig {
+            override fun hostname(): Hostname = "localhost"
+            override fun buildAnimeLink(id: AnimeId): URI = URI("http://localhost:$port/anime/$id")
+            override fun buildDataDownloadLink(id: String): URI = buildAnimeLink(id)
+            override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
+        }
+
+        val responseBody = "<html><head/><body></body></html>"
+
+        serverInstance.stubFor(
+            get(urlPathEqualTo("/anime/$id")).willReturn(
+                aResponse()
+                    .withHeader("Content-Type", "text/html")
+                    .withStatus(404)
+                    .withBody(responseBody)
+            )
+        )
+
+        val anisearchDownloader = AnisearchDownloader(testAnisearchConfig)
+
+        var onDeadEntryHasBeenInvoked = false
+
+        // when
+        val result = anisearchDownloader.download(id.toAnimeId()) {
+            onDeadEntryHasBeenInvoked = true
+        }
+
+        // then
+        assertThat(result).isEmpty()
+        assertThat(onDeadEntryHasBeenInvoked).isTrue()
     }
 
     @Test
@@ -74,7 +113,9 @@ internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by W
 
         // when
         val result = org.junit.jupiter.api.assertThrows<IllegalStateException> {
-            anisearchDownloader.download(id.toAnimeId()) { shouldNotBeInvoked() }
+            anisearchDownloader.download(id.toAnimeId()) {
+                shouldNotBeInvoked()
+            }
         }
 
         // then
@@ -107,7 +148,9 @@ internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by W
 
         // when
         val result = org.junit.jupiter.api.assertThrows<IllegalStateException> {
-            anisearchDownloader.download(id = id.toAnimeId(), onDeadEntry = { shouldNotBeInvoked() })
+            anisearchDownloader.download(id.toAnimeId()) {
+                shouldNotBeInvoked()
+            }
         }
 
         // then

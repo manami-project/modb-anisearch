@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.6.0"
+    kotlin("jvm") version "1.6.10"
     `maven-publish`
     `java-library`
     jacoco
@@ -39,7 +39,7 @@ dependencies {
     implementation(platform(kotlin("bom")))
     implementation("org.jsoup:jsoup:1.14.3")
 
-    testImplementation("ch.qos.logback:logback-classic:1.2.7")
+    testImplementation("ch.qos.logback:logback-classic:1.2.9")
     testImplementation("io.github.manamiproject:modb-test:1.3.1")
 }
 

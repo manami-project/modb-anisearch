@@ -33,14 +33,14 @@ group = "io.github.manamiproject"
 version = project.findProperty("release.version") as String? ?: ""
 
 dependencies {
-    api("io.github.manamiproject:modb-core:7.1.2")
+    api("io.github.manamiproject:modb-core:7.1.3")
     api(kotlin("stdlib-jdk8"))
 
     implementation(platform(kotlin("bom")))
     implementation("org.jsoup:jsoup:1.14.3")
 
-    testImplementation("ch.qos.logback:logback-classic:1.2.9")
-    testImplementation("io.github.manamiproject:modb-test:1.3.2")
+    testImplementation("ch.qos.logback:logback-classic:1.2.10")
+    testImplementation("io.github.manamiproject:modb-test:1.3.3")
 }
 
 kotlin {

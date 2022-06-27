@@ -100,10 +100,6 @@ public class AnisearchConverter(
             .next()
             .text()
 
-        if (value == "?") {
-            return 0
-        }
-
         return when {
             value == "?" -> 0
             value.isInt() -> value.toInt()
@@ -232,7 +228,7 @@ public class AnisearchConverter(
         check(relationsFile.regularFileExists()) { "Relations file is missing" }
 
         return Jsoup.parse(relationsFile.readFile())
-            .select("section[id=relations]")
+            .select("section[id=relations_anime]")
             .select("table")
             .select("tbody")
             .select("a")

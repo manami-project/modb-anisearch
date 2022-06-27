@@ -1658,20 +1658,8 @@ internal class AnisearchConverterTest {
 
                 // then
                 assertThat(result.relatedAnime).containsExactly(
-                    URI("https://anisearch.com/anime/10100"),
-                    URI("https://anisearch.com/anime/14020"),
-                    URI("https://anisearch.com/anime/15195"),
-                    URI("https://anisearch.com/anime/16488"),
-                    URI("https://anisearch.com/anime/1740"),
                     URI("https://anisearch.com/anime/2088"),
-                    URI("https://anisearch.com/anime/2569"),
                     URI("https://anisearch.com/anime/2753"),
-                    URI("https://anisearch.com/anime/3563"),
-                    URI("https://anisearch.com/anime/3602"),
-                    URI("https://anisearch.com/anime/8303"),
-                    URI("https://anisearch.com/anime/875"),
-                    URI("https://anisearch.com/anime/9293"),
-                    URI("https://anisearch.com/anime/9848"),
                 )
             }
         }

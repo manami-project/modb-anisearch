@@ -1089,6 +1089,156 @@ internal class AnisearchConverterTest {
                 )
             }
         }
+
+        @Test
+        fun `correctly separate hidden synonyms using 11197 as an example`() {
+            tempDirectory {
+                // given
+                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
+                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
+                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
+                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
+                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
+                }
+
+                val testFile = loadTestResource("file_converter_tests/synonyms/hidden_synonyms_11197.html")
+                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+
+                val converter = AnisearchConverter(
+                    config = testAnisearchConfig,
+                    relationsDir = tempDir,
+                )
+
+                // when
+                val result = converter.convert(testFile)
+
+                // then
+                assertThat(result.synonyms).containsExactly(
+                    "DanMachi OVA",
+                    "Danmachi OAV",
+                    "Danmachi: Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Myth OVA",
+                    "Danmachi: Is It Wrong to Try to Pick Up Girls in a Dungeon? Ist es falsch, im Dungeon in heißen Quellen zu baden?",
+                    "Danmachi: ¿qué Tiene De Malo Intentar Buscar Unos Baños Termales En Una Mazmorra?",
+                    "Dungeon ni Deai o Motomeru no wa Machigatte Iru Darouka: Familia Myth OVA",
+                    "Dungeon ni Deai o Motomeru no wa Machigatte Iru Darō ka: Familia Myth - Dungeon ni Onsen o Motomeru no wa Machigatte Iru Darō ka",
+                    "Dungeon ni Deai wo Motomeru no wa Machigatte Iru Darou ka: Familia Myth - Dungeon ni Onsen wo Motomeru no wa Machigatte Iru Darou ka",
+                    "Dungeon ni Deai wo Motomeru no wa Machigatte Iru Darouka: Familia Myth OVA",
+                    "Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Myth OVA",
+                    "Is It Wrong to Try to Pick Up Girls in a Dungeon? Is It Wrong to Expect a Hot Spring in a Dungeon?",
+                    "Is It Wrong to Try to Pick Up Girls in a Dungeon? Is It Wrong to Try to Soak in a Hot Spring in a Dungeon?",
+                    "ダンジョンに出会いを求めるのは間違っているだろうか FAMILIA MYTH ダンジョンに温泉を求めるのは間違っているだろうか",
+                )
+            }
+        }
+
+        @Test
+        fun `correctly separate hidden synonyms using 8724 as an example`() {
+            tempDirectory {
+                // given
+                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
+                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
+                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
+                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
+                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
+                }
+
+                val testFile = loadTestResource("file_converter_tests/synonyms/hidden_synonyms_8724.html")
+                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+
+                val converter = AnisearchConverter(
+                    config = testAnisearchConfig,
+                    relationsDir = tempDir,
+                )
+
+                // when
+                val result = converter.convert(testFile)
+
+                // then
+                assertThat(result.synonyms).containsExactly(
+                    "My Teen Romantic Comedy SNAFU OVA",
+                    "My Youth Romantic Comedy Is Wrong as I Expected. OVA",
+                    "Oregairu OVA",
+                    "Yahari Ore no Seishun Love Come wa Machigatte Iru. OAD",
+                    "Yahari Ore no Seishun Love Comedy wa Machigatteiru.: Kochira to Shite mo Karera Kanojora no Yukusue ni Sachi Ookaran Koto o Negawazaru o Enai.",
+                    "Yahari Ore no Seishun Love Comedy wa Machigatteiru.: Kochira to Shite mo Karera Kanojora no Yukusue ni Sachi Ookaran Koto wo Negawazaru wo Enai.",
+                    "Yahari Ore no Seishun Lovecome wa Machigatte Iru.: Kochira to Shite mo Karera Kanojora no Yukusue ni Sachi Ookaran Koto wo Negawazaru wo Enai.",
+                    "Yahari Ore no Seishun Lovecome wa Machigatte Iru.: Kochira to Shite mo Karera Kanojora no Yukusue ni Sachi Ōkaran Koto o Negawazaru o Enai.",
+                    "やはり俺の青春ラブコメはまちがっている。「こちらとしても彼ら彼女らの行く末に幸多からんことを願わざるを得ない。」",
+                )
+            }
+        }
+
+        @Test
+        fun `synonyms containing named parts are not split`() {
+            tempDirectory {
+                // given
+                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
+                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
+                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
+                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
+                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
+                }
+
+                val testFile = loadTestResource("file_converter_tests/synonyms/synonyms_contain_named_parts.html")
+                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+
+                val converter = AnisearchConverter(
+                    config = testAnisearchConfig,
+                    relationsDir = tempDir,
+                )
+
+                // when
+                val result = converter.convert(testFile)
+
+                // then
+                assertThat(result.synonyms).containsExactly(
+                    "Extra One Room: Second Season: Hanasaka Yui Experiments / Hanasaka Yui Gets Delivered / Nanahashi Minori Holds a Meeting / Nanahashi Minori Becomes a Big-Shot / Amatsuki Mashiro Becomes a Cat / Amatsuki Mashiro Gives Treatment",
+                    "Extra One Room: Second Season: Hanasaka Yui wa Tameshite Miru / Hanasaka Yui wa Okurarete Kuru / Nanahashi Minori wa Kaigi Suru / Nanahashi Minori wa Oomono ni Naru / Amatsuki Mashiro wa Neko ni Naru / Amatsuki Mashiro wa Chiryou Suru",
+                    "One Room 2nd Season Extra",
+                    "One Room Second Season Special",
+                    "One Room セカンドシーズン -extra-",
+                )
+            }
+        }
+
+        @Test
+        fun `hidden synonyms and named parts`() {
+            tempDirectory {
+                // given
+                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
+                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
+                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
+                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
+                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
+                }
+
+                val testFile = loadTestResource("file_converter_tests/synonyms/hidden_synonyms_and_named_parts.html")
+                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+
+                val converter = AnisearchConverter(
+                    config = testAnisearchConfig,
+                    relationsDir = tempDir,
+                )
+
+                // when
+                val result = converter.convert(testFile)
+
+                // then
+                assertThat(result.synonyms).containsExactly(
+                    "Inu x Boku SS Special",
+                    "Inu x Boku SS: Miketsukami-kun Henka / Switch / Omamagoto",
+                    "Inu x Boku Secret Service: Miketsukami-kun‘s Transformations / Switch / Playing House",
+                    "Inu x Boku Secret Service: Miketsukami‘s Metamorphosis / Switch / Playing House",
+                    "Inu × Boku SS Special",
+                    "Inu × Boku Secret Service: Miketsukami-kun‘s Transformations / Switch / Playing House",
+                    "Inu × Boku Secret Service: Miketsukami‘s Metamorphosis",
+                    "Inu × Boku Secret Service: Miketsukami‘s Metamorphosis / Switch / Playing House",
+                    "Youko x Boku SS Special",
+                    "Youko × Boku SS Special",
+                    "妖狐×僕SS 御狐神くん変化 ／ スイッチ ／ おままごと",
+                )
+            }
+        }
     }
 
     @Nested

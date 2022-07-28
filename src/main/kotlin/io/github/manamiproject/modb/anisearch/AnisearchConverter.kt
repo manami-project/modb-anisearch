@@ -216,10 +216,16 @@ public class AnisearchConverter(
         val synonymsDiv = document.select("div[class=synonyms]")
         val synonymsDivNoSpan = synonymsDiv.textNodes().map { it.text().trim() }.map { it.trimStart(',').trimEnd(',') }
         val synonymsDivSpan = synonymsDiv.select("span")
+            .filterNot { it.hasAttr("id") && it.attr("id") == "text-synonyms"}
             .map { it.text().trim() }
             .filterNot { it == "Synonyms:" }
 
-        return synonymsByLanguage.union(subheaderTitles).union(synonymsDivNoSpan).union(synonymsDivSpan)
+        val hiddenWithoutSpan = synonymsDiv.select("span[id=text-synonyms]")
+            .textNodes()
+            .map { it.text().trim() }
+            .map { it.trimStart(',').trimEnd(',') }
+
+        return synonymsByLanguage.union(subheaderTitles).union(synonymsDivNoSpan).union(synonymsDivSpan).union(hiddenWithoutSpan)
     }
 
     private fun extractRelatedAnime(id: AnimeId): Collection<URI> {

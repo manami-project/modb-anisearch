@@ -1239,6 +1239,37 @@ internal class AnisearchConverterTest {
                 )
             }
         }
+
+        @Test
+        fun `correctly extract synonyms in italic`() {
+            tempDirectory {
+                // given
+                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
+                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
+                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
+                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
+                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
+                }
+
+                val testFile = loadTestResource("file_converter_tests/synonyms/italic.html")
+                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+
+                val converter = AnisearchConverter(
+                    config = testAnisearchConfig,
+                    relationsDir = tempDir,
+                )
+
+                // when
+                val result = converter.convert(testFile)
+
+                // then
+                assertThat(result.synonyms).containsExactly(
+                    "Bakugan: Battle Planet Season 4",
+                    "Bakugan: Battle Planet Staffel 4",
+                    "爆丸エボリューションズ",
+                )
+            }
+        }
     }
 
     @Nested

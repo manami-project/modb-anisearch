@@ -219,13 +219,14 @@ public class AnisearchConverter(
             .filterNot { it.hasAttr("id") && it.attr("id") == "text-synonyms"}
             .map { it.text().trim() }
             .filterNot { it == "Synonyms:" }
+        val italic = synonymsDiv.select("i").textNodes().map { it.text() }.toSet()
 
         val hiddenWithoutSpan = synonymsDiv.select("span[id=text-synonyms]")
             .textNodes()
             .map { it.text().trim() }
             .map { it.trimStart(',').trimEnd(',') }
 
-        return synonymsByLanguage.union(subheaderTitles).union(synonymsDivNoSpan).union(synonymsDivSpan).union(hiddenWithoutSpan)
+        return synonymsByLanguage.union(subheaderTitles).union(synonymsDivNoSpan).union(synonymsDivSpan).union(hiddenWithoutSpan).union(italic)
     }
 
     private fun extractRelatedAnime(id: AnimeId): Collection<URI> {

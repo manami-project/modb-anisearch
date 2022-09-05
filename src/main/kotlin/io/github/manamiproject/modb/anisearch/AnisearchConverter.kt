@@ -38,7 +38,8 @@ public class AnisearchConverter(
 
         val jsonData = document.select("script[type=application/ld+json]")
             .dataNodes()
-            .toString()
+            .map { it.toString() }
+            .first { !it.contains("BreadcrumbList") }
             .trimStart('[')
             .trimEnd(']')
         val anisearchData = Json.parseJson<AnisearchData>(jsonData) ?: AnisearchData()

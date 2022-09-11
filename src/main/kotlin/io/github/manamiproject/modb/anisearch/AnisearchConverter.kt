@@ -55,7 +55,7 @@ public class AnisearchConverter(
             picture = picture,
             thumbnail = findThumbnail(picture),
             status = extractStatus(document),
-            duration = Duration.UNKNOWN,
+            duration = extractDuration(document),
             animeSeason = extractAnimeSeason(anisearchData)
         ).apply {
             addSources(sources)
@@ -140,15 +140,11 @@ public class AnisearchConverter(
     }
 
     private fun extractDuration(document: Document): Duration {
-        val textValue = document.select("ul[id=infodetails]")
-            .select("span:matchesOwn(Episodes)")
-            .next()
+        val textValue = document.select("ul[class=xlist row simple infoblock]")
+            .select("time")
             .text()
             .trim()
-
-        if (textValue == "?") {
-            return Duration.UNKNOWN
-        }
+            .lowercase()
 
         val fallbackValue = "0"
         val value = (Regex("[0-9]+").find(textValue)?.value?.ifBlank { fallbackValue } ?: fallbackValue).toInt()

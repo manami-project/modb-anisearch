@@ -29,6 +29,16 @@ fun main() {
     downloader.download("8504").writeToFile(resourceFile("file_converter_tests/anime_season/year_of_premiere/2022.html"))
     downloader.download("16275").writeToFile(resourceFile("file_converter_tests/anime_season/year_of_premiere/unknown.html"))
 
+    downloader.download("6247").writeToFile(resourceFile("file_converter_tests/duration/1_hour.html"))
+    downloader.download("11051").writeToFile(resourceFile("file_converter_tests/duration/1_minute.html"))
+    downloader.download("6889").writeToFile(resourceFile("file_converter_tests/duration/2_hours.html"))
+    downloader.download("14844").writeToFile(resourceFile("file_converter_tests/duration/24_minutes_per_episode.html"))
+    downloader.download("7192").writeToFile(resourceFile("file_converter_tests/duration/63_minutes_by_6_episodes.html"))
+    downloader.download("7163").writeToFile(resourceFile("file_converter_tests/duration/70_minutes.html"))
+    downloader.download("602").writeToFile(resourceFile("file_converter_tests/duration/134_minutes.html"))
+    downloader.download("16711").writeToFile(resourceFile("file_converter_tests/duration/episodes_and_duration_unknown.html"))
+    downloader.download("17039").writeToFile(resourceFile("file_converter_tests/duration/episodes_known_duration_unknown.html"))
+
     downloader.download("9981").writeToFile(resourceFile("file_converter_tests/episodes/1.html"))
     downloader.download("3135").writeToFile(resourceFile("file_converter_tests/episodes/10.html"))
     downloader.download("4138").writeToFile(resourceFile("file_converter_tests/episodes/100.html"))

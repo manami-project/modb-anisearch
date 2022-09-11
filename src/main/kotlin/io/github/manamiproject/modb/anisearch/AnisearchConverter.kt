@@ -50,12 +50,12 @@ public class AnisearchConverter(
 
         return Anime(
             _title = extractTitle(anisearchData, document),
-            episodes = extractEpisodes(anisearchData, document),
+            episodes = extractEpisodes(anisearchData),
             type = extractType(document),
             picture = picture,
             thumbnail = findThumbnail(picture),
             status = extractStatus(document),
-            duration = extractDuration(document),
+            duration = Duration.UNKNOWN,
             animeSeason = extractAnimeSeason(anisearchData)
         ).apply {
             addSources(sources)
@@ -95,25 +95,16 @@ public class AnisearchConverter(
         return title
     }
 
-    private fun extractEpisodes(anisearchData: AnisearchData, document: Document): Episodes {
-        val value = document.select("ul[id=infodetails]")
-            .select("span:matchesOwn(Episodes)")
-            .next()
-            .text()
-
-        return when {
-            value == "?" -> 0
-            value.isInt() -> value.toInt()
-            else -> anisearchData.episodes // frontend shows ? whereas the json contains 1. So the json is fallback only
-        }
-    }
+    private fun extractEpisodes(anisearchData: AnisearchData): Episodes = anisearchData.episodes
 
     private fun extractType(document: Document): Anime.Type {
-        val type = document.select("ul[id=infodetails]")
-            .select("span:matchesOwn(Type)")
-            .parents()
-            .first()!!
-            .ownText()
+        val type = document.select("ul[class=xlist row simple infoblock]")
+            .select("div[class=type]")
+            .textNodes()
+            .first()
+            .text()
+            .split(',')
+            .first()
             .trim()
             .lowercase()
 

@@ -554,7 +554,7 @@ internal class AnisearchConverterTest {
     inner class EpisodesTests {
 
         @Test
-        fun `unknown number of episodes`() {
+        fun `unknown number of episodes defaults to 1`() {
             tempDirectory {
                 // given
                 val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
@@ -576,7 +576,7 @@ internal class AnisearchConverterTest {
                 val result = converter.convert(testFile)
 
                 // then
-                assertThat(result.episodes).isZero()
+                assertThat(result.episodes).isOne()
             }
         }
 
@@ -711,7 +711,7 @@ internal class AnisearchConverterTest {
                 val result = converter.convert(testFile)
 
                 // then
-                assertThat(result.episodes).isEqualTo(1)
+                assertThat(result.episodes).isEqualTo(6)
             }
         }
     }
@@ -720,7 +720,7 @@ internal class AnisearchConverterTest {
     inner class DurationTests {
 
         @Test
-        fun `1 hour`() {
+        fun `always returns unknown, because they removed it along with the whole info box`() {
             tempDirectory {
                 // given
                 val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
@@ -730,7 +730,7 @@ internal class AnisearchConverterTest {
                     override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
-                val testFile = loadTestResource("file_converter_tests/duration/1_hour.html")
+                val testFile = loadTestResource("file_converter_tests/sources/3633.html")
                 "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
@@ -742,223 +742,7 @@ internal class AnisearchConverterTest {
                 val result = converter.convert(testFile)
 
                 // then
-                assertThat(result.duration).isEqualTo(Duration(1, HOURS))
-            }
-        }
-
-        @Test
-        fun `1 minute`() {
-            tempDirectory {
-                // given
-                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
-                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
-                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
-                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
-                }
-
-                val testFile = loadTestResource("file_converter_tests/duration/1_minute.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
-
-                val converter = AnisearchConverter(
-                    config = testAnisearchConfig,
-                    relationsDir = tempDir,
-                )
-
-                // when
-                val result = converter.convert(testFile)
-
-                // then
-                assertThat(result.duration).isEqualTo(Duration(1, MINUTES))
-            }
-        }
-
-        @Test
-        fun `2 hours`() {
-            tempDirectory {
-                // given
-                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
-                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
-                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
-                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
-                }
-
-                val testFile = loadTestResource("file_converter_tests/duration/2_hours.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
-
-                val converter = AnisearchConverter(
-                    config = testAnisearchConfig,
-                    relationsDir = tempDir,
-                )
-
-                // when
-                val result = converter.convert(testFile)
-
-                // then
-                assertThat(result.duration).isEqualTo(Duration(2, HOURS))
-            }
-        }
-
-        @Test
-        fun `24 minutes per episode`() {
-            tempDirectory {
-                // given
-                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
-                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
-                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
-                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
-                }
-
-                val testFile = loadTestResource("file_converter_tests/duration/24_minutes_per_episode.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
-
-                val converter = AnisearchConverter(
-                    config = testAnisearchConfig,
-                    relationsDir = tempDir,
-                )
-
-                // when
-                val result = converter.convert(testFile)
-
-                // then
-                assertThat(result.duration).isEqualTo(Duration(24, MINUTES))
-            }
-        }
-
-        @Test
-        fun `63 minutes`() {
-            tempDirectory {
-                // given
-                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
-                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
-                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
-                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
-                }
-
-                val testFile = loadTestResource("file_converter_tests/duration/63_minutes_by_6_episodes.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
-
-                val converter = AnisearchConverter(
-                    config = testAnisearchConfig,
-                    relationsDir = tempDir,
-                )
-
-                // when
-                val result = converter.convert(testFile)
-
-                // then
-                assertThat(result.duration).isEqualTo(Duration(63, MINUTES))
-            }
-        }
-
-        @Test
-        fun `70 minutes`() {
-            tempDirectory {
-                // given
-                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
-                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
-                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
-                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
-                }
-
-                val testFile = loadTestResource("file_converter_tests/duration/70_minutes.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
-
-                val converter = AnisearchConverter(
-                    config = testAnisearchConfig,
-                    relationsDir = tempDir,
-                )
-
-                // when
-                val result = converter.convert(testFile)
-
-                // then
-                assertThat(result.duration).isEqualTo(Duration(70, MINUTES))
-            }
-        }
-
-        @Test
-        fun `134 minutes`() {
-            tempDirectory {
-                // given
-                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
-                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
-                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
-                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
-                }
-
-                val testFile = loadTestResource("file_converter_tests/duration/134_minutes.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
-
-                val converter = AnisearchConverter(
-                    config = testAnisearchConfig,
-                    relationsDir = tempDir,
-                )
-
-                // when
-                val result = converter.convert(testFile)
-
-                // then
-                assertThat(result.duration).isEqualTo(Duration(134, MINUTES))
-            }
-        }
-
-        @Test
-        fun `episodes and duration unknown`() {
-            tempDirectory {
-                // given
-                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
-                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
-                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
-                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
-                }
-
-                val testFile = loadTestResource("file_converter_tests/duration/episodes_and_duration_unknown.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
-
-                val converter = AnisearchConverter(
-                    config = testAnisearchConfig,
-                    relationsDir = tempDir,
-                )
-
-                // when
-                val result = converter.convert(testFile)
-
-                // then
-                assertThat(result.duration).isEqualTo(Duration(0, SECONDS))
-            }
-        }
-
-        @Test
-        fun `episodes known duration unknown`() {
-            tempDirectory {
-                // given
-                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
-                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
-                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
-                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
-                }
-
-                val testFile = loadTestResource("file_converter_tests/duration/episodes_known_duration_unknown.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
-
-                val converter = AnisearchConverter(
-                    config = testAnisearchConfig,
-                    relationsDir = tempDir,
-                )
-
-                // when
-                val result = converter.convert(testFile)
-
-                // then
-                assertThat(result.duration).isEqualTo(Duration(0, SECONDS))
+                assertThat(result.duration).isEqualTo(Duration.UNKNOWN)
             }
         }
     }
@@ -1085,7 +869,10 @@ internal class AnisearchConverterTest {
                     "Chikyūgai Shōnen Shōjo",
                     "Extra-Terrestrial Boys & Girls",
                     "Extraterrestial Boys and Girls",
-                    "地球外少年少女",
+                    "Jóvenes en órbita",
+                    "Notre jeunesse en orbite",
+                    "The Orbital Children",
+                    "地球外少年少女"
                 )
             }
         }

@@ -109,8 +109,8 @@ internal class AnisearchConverterTest {
                 val result = converter.convert(testFile)
 
                 // then
-                assertThat(result.picture).isEqualTo(URI("https://cdn.anisearch.com/images/anime/cover/full/0.webp"))
-                assertThat(result.thumbnail).isEqualTo(URI("https://cdn.anisearch.com/images/anime/cover/thumb/0.webp"))
+                assertThat(result.picture).isEqualTo(URI("https://www.anisearch.com/images/anime/cover/0_300.webp"))
+                assertThat(result.thumbnail).isEqualTo(URI("https://www.anisearch.com/images/anime/cover/full/0.webp"))
             }
         }
 
@@ -137,8 +137,8 @@ internal class AnisearchConverterTest {
                 val result = converter.convert(testFile)
 
                 // then
-                assertThat(result.picture).isEqualTo(URI("https://cdn.anisearch.com/images/anime/cover/full/3/3633.webp"))
-                assertThat(result.thumbnail).isEqualTo(URI("https://cdn.anisearch.com/images/anime/cover/thumb/3/3633.webp"))
+                assertThat(result.picture).isEqualTo(URI("https://www.anisearch.com/images/anime/cover/3/3633_300.webp"))
+                assertThat(result.thumbnail).isEqualTo(URI("https://www.anisearch.com/images/anime/cover/full/3/3633.webp"))
             }
         }
     }

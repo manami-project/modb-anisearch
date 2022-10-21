@@ -44,7 +44,7 @@ public class AnisearchConverter(
             .trimEnd(']')
         val anisearchData = Json.parseJson<AnisearchData>(jsonData) ?: AnisearchData()
 
-        val picture = extractPicture(anisearchData, document)
+        val thumbnail = extractThumbnail(document)
         val sources = extractSourcesEntry(document)
         val id = config.extractAnimeId(sources.first())
 
@@ -52,8 +52,8 @@ public class AnisearchConverter(
             _title = extractTitle(anisearchData, document),
             episodes = extractEpisodes(anisearchData),
             type = extractType(document),
-            picture = picture,
-            thumbnail = findThumbnail(picture),
+            picture = generatePicture(thumbnail),
+            thumbnail = thumbnail,
             status = extractStatus(document),
             duration = extractDuration(document),
             animeSeason = extractAnimeSeason(anisearchData)
@@ -65,11 +65,8 @@ public class AnisearchConverter(
         }
     }
 
-    private fun extractPicture(anisearchData: AnisearchData, document: Document): URI {
-        if (anisearchData.image.isNotBlank()) {
-            return URI(anisearchData.image)
-        }
-
+    private fun extractThumbnail(document: Document): URI {
+        // links in JSON are invalid (http 404) for a few weeks now. Have to solely rely on meta tag again
         val value = document.select("meta[property=og:image]")
                 .attr("content")
                 .trim()
@@ -123,8 +120,8 @@ public class AnisearchConverter(
         }
     }
 
-    private fun findThumbnail(picture: URI): URI {
-        val value = picture.toString().replace("full", "thumb")
+    private fun generatePicture(picture: URI): URI {
+        val value = picture.toString().replace("/full", EMPTY).replace(".webp", "_300.webp")
         return URI(value)
     }
 

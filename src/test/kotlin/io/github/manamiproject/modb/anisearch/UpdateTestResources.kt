@@ -46,7 +46,7 @@ fun main() {
     downloader.download("16804").writeToFile(resourceFile("file_converter_tests/episodes/type-is-double.html"))
     downloader.download("16578").writeToFile(resourceFile("file_converter_tests/episodes/unknown.html"))
 
-    downloader.download("17551").writeToFile(resourceFile("file_converter_tests/picture_and_thumbnail/neither_picture_nor_thumbnail.html"))
+    downloader.download("15237").writeToFile(resourceFile("file_converter_tests/picture_and_thumbnail/neither_picture_nor_thumbnail.html"))
     downloader.download("3633").writeToFile(resourceFile("file_converter_tests/picture_and_thumbnail/picture_and_thumbnail_available.html"))
 
     relationsDownloader.download("4942").writeToFile(resourceFile("file_converter_tests/related_anime/multiple_related_anime.html"))

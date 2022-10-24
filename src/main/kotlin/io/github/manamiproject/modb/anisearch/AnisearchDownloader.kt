@@ -2,11 +2,14 @@ package io.github.manamiproject.modb.anisearch
 
 import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.config.MetaDataProviderConfig
+import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_NETWORK
 import io.github.manamiproject.modb.core.downloader.Downloader
 import io.github.manamiproject.modb.core.extensions.EMPTY
 import io.github.manamiproject.modb.core.httpclient.DefaultHttpClient
 import io.github.manamiproject.modb.core.httpclient.HttpClient
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 /**
  * Downloads anime data from anisearch.com
@@ -16,20 +19,25 @@ import io.github.manamiproject.modb.core.logging.LoggerDelegate
  */
 public class AnisearchDownloader(
     private val config: MetaDataProviderConfig,
-    private val httpClient: HttpClient = DefaultHttpClient(),
+    private val httpClient: HttpClient = DefaultHttpClient(isTestContext = config.isTestContext()),
 ): Downloader {
 
-    override fun download(id: AnimeId, onDeadEntry: (AnimeId) -> Unit): String {
+    @Deprecated("Use coroutines", ReplaceWith("runBlocking { }", "kotlinx.coroutines.runBlocking"))
+    override fun download(id: AnimeId, onDeadEntry: (AnimeId) -> Unit): String = runBlocking {
+        downloadSuspendable(id, onDeadEntry)
+    }
+
+    override suspend fun downloadSuspendable(id: AnimeId, onDeadEntry: (AnimeId) -> Unit): String = withContext(LIMITED_NETWORK) {
         log.debug { "Downloading [anisearchId=$id]" }
 
-        val response = httpClient.get(
+        val response = httpClient.getSuspedable(
             url = config.buildDataDownloadLink(id).toURL(),
-            headers = mapOf("host" to listOf("www.${config.hostname()}"))
+            headers = mapOf("host" to listOf("www.${config.hostname()}")),
         )
 
         check(response.body.isNotBlank()) { "Response body was blank for [anisearchId=$id] with response code [${response.code}]" }
 
-        return when(response.code) {
+        return@withContext when(response.code) {
             200 -> response.body
             404 -> {
                 onDeadEntry.invoke(id)

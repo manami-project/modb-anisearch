@@ -5,6 +5,7 @@ import io.github.manamiproject.modb.core.Json
 import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.config.MetaDataProviderConfig
 import io.github.manamiproject.modb.core.converter.AnimeConverter
+import io.github.manamiproject.modb.core.coroutines.ModbDispatchers.LIMITED_CPU
 import io.github.manamiproject.modb.core.extensions.*
 import io.github.manamiproject.modb.core.models.*
 import io.github.manamiproject.modb.core.models.Anime.Status.*
@@ -12,6 +13,8 @@ import io.github.manamiproject.modb.core.models.Anime.Type.*
 import io.github.manamiproject.modb.core.models.AnimeSeason.Season.*
 import io.github.manamiproject.modb.core.models.Duration.TimeUnit.HOURS
 import io.github.manamiproject.modb.core.models.Duration.TimeUnit.MINUTES
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.net.URI
@@ -33,7 +36,14 @@ public class AnisearchConverter(
         require(relationsDir.directoryExists()) { "Directory for relations [$relationsDir] does not exist or is not a directory." }
     }
 
-    override fun convert(rawContent: String): Anime {
+    @Deprecated("Use coroutines",
+        ReplaceWith("runBlocking { convertSuspendable(rawContent) }", "kotlinx.coroutines.runBlocking")
+    )
+    override fun convert(rawContent: String): Anime = runBlocking {
+        convertSuspendable(rawContent)
+    }
+
+    override suspend fun convertSuspendable(rawContent: String): Anime = withContext(LIMITED_CPU) {
         val document = Jsoup.parse(rawContent)
 
         val jsonData = document.select("script[type=application/ld+json]")
@@ -42,13 +52,13 @@ public class AnisearchConverter(
             .first { !it.contains("BreadcrumbList") }
             .trimStart('[')
             .trimEnd(']')
-        val anisearchData = Json.parseJson<AnisearchData>(jsonData) ?: AnisearchData()
+        val anisearchData = Json.parseJsonSuspendable<AnisearchData>(jsonData) ?: AnisearchData()
 
         val thumbnail = extractThumbnail(document)
         val sources = extractSourcesEntry(document)
         val id = config.extractAnimeId(sources.first())
 
-        return Anime(
+        return@withContext Anime(
             _title = extractTitle(anisearchData, document),
             episodes = extractEpisodes(anisearchData),
             type = extractType(document),
@@ -214,12 +224,12 @@ public class AnisearchConverter(
         return synonymsByLanguage.union(subheaderTitles).union(synonymsDivNoSpan).union(synonymsDivSpan).union(hiddenWithoutSpan).union(italic)
     }
 
-    private fun extractRelatedAnime(id: AnimeId): Collection<URI> {
+    private suspend fun extractRelatedAnime(id: AnimeId): Collection<URI> = withContext(LIMITED_CPU) {
         val relationsFile = relationsDir.resolve("$id.${config.fileSuffix()}")
 
         check(relationsFile.regularFileExists()) { "Relations file is missing" }
 
-        return Jsoup.parse(relationsFile.readFile())
+        return@withContext Jsoup.parse(relationsFile.readFileSuspendable())
             .select("section[id=relations_anime]")
             .select("table")
             .select("tbody")

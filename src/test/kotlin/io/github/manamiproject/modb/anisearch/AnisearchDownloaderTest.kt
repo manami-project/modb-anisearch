@@ -10,7 +10,9 @@ import io.github.manamiproject.modb.core.extensions.EMPTY
 import io.github.manamiproject.modb.core.extensions.toAnimeId
 import io.github.manamiproject.modb.test.MockServerTestCase
 import io.github.manamiproject.modb.test.WireMockServerCreator
+import io.github.manamiproject.modb.test.exceptionExpected
 import io.github.manamiproject.modb.test.shouldNotBeInvoked
+import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.net.URI
@@ -43,8 +45,10 @@ internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by W
         val anisearchDownloader = AnisearchDownloader(testAnisearchConfig)
 
         // when
-        val result = anisearchDownloader.download(id.toAnimeId()) {
-            shouldNotBeInvoked()
+        val result = runBlocking {
+            anisearchDownloader.downloadSuspendable(id.toAnimeId()) {
+                shouldNotBeInvoked()
+            }
         }
 
         // then
@@ -79,8 +83,10 @@ internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by W
         var onDeadEntryHasBeenInvoked = false
 
         // when
-        val result = anisearchDownloader.download(id.toAnimeId()) {
-            onDeadEntryHasBeenInvoked = true
+        val result = runBlocking {
+            anisearchDownloader.downloadSuspendable(id.toAnimeId()) {
+                onDeadEntryHasBeenInvoked = true
+            }
         }
 
         // then
@@ -112,8 +118,8 @@ internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by W
         val anisearchDownloader = AnisearchDownloader(testAnisearchConfig)
 
         // when
-        val result = org.junit.jupiter.api.assertThrows<IllegalStateException> {
-            anisearchDownloader.download(id.toAnimeId()) {
+        val result = exceptionExpected<IllegalStateException> {
+            anisearchDownloader.downloadSuspendable(id.toAnimeId()) {
                 shouldNotBeInvoked()
             }
         }
@@ -147,8 +153,8 @@ internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by W
         val anisearchDownloader = AnisearchDownloader(testAnisearchConfig)
 
         // when
-        val result = org.junit.jupiter.api.assertThrows<IllegalStateException> {
-            anisearchDownloader.download(id.toAnimeId()) {
+        val result = exceptionExpected<IllegalStateException> {
+            anisearchDownloader.downloadSuspendable(id.toAnimeId()) {
                 shouldNotBeInvoked()
             }
         }

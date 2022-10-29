@@ -33,7 +33,7 @@ group = "io.github.manamiproject"
 version = project.findProperty("release.version") as String? ?: ""
 
 dependencies {
-    api("io.github.manamiproject:modb-core:8.0.0-alpha.5")
+    api("io.github.manamiproject:modb-core:8.0.0-alpha.10")
     api(kotlin("stdlib-jdk8"))
 
     implementation(platform(kotlin("bom")))

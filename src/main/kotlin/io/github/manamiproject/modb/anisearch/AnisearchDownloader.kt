@@ -27,7 +27,7 @@ public class AnisearchDownloader(
         downloadSuspendable(id, onDeadEntry)
     }
 
-    override suspend fun downloadSuspendable(id: AnimeId, onDeadEntry: (AnimeId) -> Unit): String = withContext(LIMITED_NETWORK) {
+    override suspend fun downloadSuspendable(id: AnimeId, onDeadEntry: suspend (AnimeId) -> Unit): String = withContext(LIMITED_NETWORK) {
         log.debug { "Downloading [anisearchId=$id]" }
 
         val response = httpClient.getSuspedable(

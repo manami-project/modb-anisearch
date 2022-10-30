@@ -22,7 +22,7 @@ public class AnisearchDownloader(
     private val httpClient: HttpClient = DefaultHttpClient(isTestContext = config.isTestContext()),
 ): Downloader {
 
-    @Deprecated("Use coroutines", ReplaceWith("runBlocking { }", "kotlinx.coroutines.runBlocking"))
+    @Deprecated("Use coroutines", ReplaceWith(EMPTY))
     override fun download(id: AnimeId, onDeadEntry: (AnimeId) -> Unit): String = runBlocking {
         downloadSuspendable(id, onDeadEntry)
     }

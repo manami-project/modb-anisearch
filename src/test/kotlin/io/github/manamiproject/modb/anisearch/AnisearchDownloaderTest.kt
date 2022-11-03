@@ -46,7 +46,7 @@ internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by W
 
         // when
         val result = runBlocking {
-            anisearchDownloader.downloadSuspendable(id.toAnimeId()) {
+            anisearchDownloader.download(id.toAnimeId()) {
                 shouldNotBeInvoked()
             }
         }
@@ -84,7 +84,7 @@ internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by W
 
         // when
         val result = runBlocking {
-            anisearchDownloader.downloadSuspendable(id.toAnimeId()) {
+            anisearchDownloader.download(id.toAnimeId()) {
                 onDeadEntryHasBeenInvoked = true
             }
         }
@@ -119,7 +119,7 @@ internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by W
 
         // when
         val result = exceptionExpected<IllegalStateException> {
-            anisearchDownloader.downloadSuspendable(id.toAnimeId()) {
+            anisearchDownloader.download(id.toAnimeId()) {
                 shouldNotBeInvoked()
             }
         }
@@ -154,7 +154,7 @@ internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by W
 
         // when
         val result = exceptionExpected<IllegalStateException> {
-            anisearchDownloader.downloadSuspendable(id.toAnimeId()) {
+            anisearchDownloader.download(id.toAnimeId()) {
                 shouldNotBeInvoked()
             }
         }

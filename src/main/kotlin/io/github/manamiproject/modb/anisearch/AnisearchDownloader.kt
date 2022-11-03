@@ -8,7 +8,6 @@ import io.github.manamiproject.modb.core.extensions.EMPTY
 import io.github.manamiproject.modb.core.httpclient.DefaultHttpClient
 import io.github.manamiproject.modb.core.httpclient.HttpClient
 import io.github.manamiproject.modb.core.logging.LoggerDelegate
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 /**
@@ -22,15 +21,10 @@ public class AnisearchDownloader(
     private val httpClient: HttpClient = DefaultHttpClient(isTestContext = config.isTestContext()),
 ): Downloader {
 
-    @Deprecated("Use coroutines", ReplaceWith(EMPTY))
-    override fun download(id: AnimeId, onDeadEntry: (AnimeId) -> Unit): String = runBlocking {
-        downloadSuspendable(id, onDeadEntry)
-    }
-
-    override suspend fun downloadSuspendable(id: AnimeId, onDeadEntry: suspend (AnimeId) -> Unit): String = withContext(LIMITED_NETWORK) {
+    override suspend fun download(id: AnimeId, onDeadEntry: suspend (AnimeId) -> Unit): String = withContext(LIMITED_NETWORK) {
         log.debug { "Downloading [anisearchId=$id]" }
 
-        val response = httpClient.getSuspedable(
+        val response = httpClient.get(
             url = config.buildDataDownloadLink(id).toURL(),
             headers = mapOf("host" to listOf("www.${config.hostname()}")),
         )

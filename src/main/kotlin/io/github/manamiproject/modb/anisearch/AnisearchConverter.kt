@@ -14,7 +14,6 @@ import io.github.manamiproject.modb.core.models.AnimeSeason.Season.*
 import io.github.manamiproject.modb.core.models.Duration.TimeUnit.HOURS
 import io.github.manamiproject.modb.core.models.Duration.TimeUnit.MINUTES
 import io.github.manamiproject.modb.core.parseHtml
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -37,12 +36,7 @@ public class AnisearchConverter(
         require(relationsDir.directoryExists()) { "Directory for relations [$relationsDir] does not exist or is not a directory." }
     }
 
-    @Deprecated("Use coroutines", ReplaceWith(EMPTY))
-    override fun convert(rawContent: String): Anime = runBlocking {
-        convertSuspendable(rawContent)
-    }
-
-    override suspend fun convertSuspendable(rawContent: String): Anime = withContext(LIMITED_CPU) {
+    override suspend fun convert(rawContent: String): Anime = withContext(LIMITED_CPU) {
         val document = parseHtml(rawContent)
 
         val jsonData = document.select("script[type=application/ld+json]")
@@ -51,7 +45,7 @@ public class AnisearchConverter(
             .first { !it.contains("BreadcrumbList") }
             .trimStart('[')
             .trimEnd(']')
-        val anisearchData = Json.parseJsonSuspendable<AnisearchData>(jsonData) ?: AnisearchData()
+        val anisearchData = Json.parseJson<AnisearchData>(jsonData) ?: AnisearchData()
 
         val thumbnail = extractThumbnail(document)
         val sources = extractSourcesEntry(document)
@@ -228,7 +222,7 @@ public class AnisearchConverter(
 
         check(relationsFile.regularFileExists()) { "Relations file is missing" }
 
-        return@withContext Jsoup.parse(relationsFile.readFileSuspendable())
+        return@withContext Jsoup.parse(relationsFile.readFile())
             .select("section[id=relations_anime]")
             .select("table")
             .select("tbody")

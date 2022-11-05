@@ -1,7 +1,7 @@
 package io.github.manamiproject.modb.anisearch
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import java.net.URI
 
 internal class AnisearchRelationsConfigTest {

@@ -15,7 +15,6 @@ import io.github.manamiproject.modb.core.models.Duration.TimeUnit.HOURS
 import io.github.manamiproject.modb.core.models.Duration.TimeUnit.MINUTES
 import io.github.manamiproject.modb.core.parseHtml
 import kotlinx.coroutines.withContext
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.net.URI
 
@@ -59,7 +58,7 @@ public class AnisearchConverter(
             thumbnail = thumbnail,
             status = extractStatus(document),
             duration = extractDuration(document),
-            animeSeason = extractAnimeSeason(anisearchData)
+            animeSeason = extractAnimeSeason(anisearchData),
         ).apply {
             addSources(sources)
             addSynonyms(extractSynonyms(document))
@@ -222,15 +221,16 @@ public class AnisearchConverter(
 
         check(relationsFile.regularFileExists()) { "Relations file is missing" }
 
-        return@withContext Jsoup.parse(relationsFile.readFile())
-            .select("section[id=relations_anime]")
-            .select("table")
-            .select("tbody")
-            .select("a")
-            .map { it.attr("href") }
-            .map { it.replace("anime/", EMPTY) }
-            .map { it.substring(0, it.indexOf(',')) }
-            .map { config.buildAnimeLink(it) }
+        return@withContext parseHtml(relationsFile.readFile()) { document ->
+            document.select("section[id=relations_anime]")
+                .select("table")
+                .select("tbody")
+                .select("a")
+                .map { it.attr("href") }
+                .map { it.replace("anime/", EMPTY) }
+                .map { it.substring(0, it.indexOf(',')) }
+                .map { config.buildAnimeLink(it) }
+        }
     }
 
     private fun extractTags(document: Document): Collection<Tag> {

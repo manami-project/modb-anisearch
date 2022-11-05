@@ -14,84 +14,84 @@ import io.github.manamiproject.modb.test.exceptionExpected
 import io.github.manamiproject.modb.test.shouldNotBeInvoked
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import java.net.URI
 
 internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by WireMockServerCreator() {
 
     @Test
     fun `successfully load an entry`() {
-        // given
-        val id = 1535
+        runBlocking {
+            // given
+            val id = 1535
 
-        val testAnisearchConfig = object: MetaDataProviderConfig by MetaDataProviderTestConfig {
-            override fun hostname(): Hostname = "localhost"
-            override fun buildAnimeLink(id: AnimeId): URI = URI("http://localhost:$port/anime/$id")
-            override fun buildDataDownloadLink(id: String): URI = buildAnimeLink(id)
-            override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-        }
+            val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
+                override fun hostname(): Hostname = "localhost"
+                override fun buildAnimeLink(id: AnimeId): URI = URI("http://localhost:$port/anime/$id")
+                override fun buildDataDownloadLink(id: String): URI = buildAnimeLink(id)
+                override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
+            }
 
-        val responseBody = "<html><head/><body></body></html>"
+            val responseBody = "<html><head/><body></body></html>"
 
-        serverInstance.stubFor(
-            get(urlPathEqualTo("/anime/$id")).willReturn(
-                aResponse()
-                    .withHeader("Content-Type", "text/html")
-                    .withStatus(200)
-                    .withBody(responseBody)
+            serverInstance.stubFor(
+                get(urlPathEqualTo("/anime/$id")).willReturn(
+                    aResponse()
+                        .withHeader("Content-Type", "text/html")
+                        .withStatus(200)
+                        .withBody(responseBody)
+                )
             )
-        )
 
-        val anisearchDownloader = AnisearchDownloader(testAnisearchConfig)
+            val anisearchDownloader = AnisearchDownloader(testAnisearchConfig)
 
-        // when
-        val result = runBlocking {
-            anisearchDownloader.download(id.toAnimeId()) {
+            // when
+            val result = anisearchDownloader.download(id.toAnimeId()) {
                 shouldNotBeInvoked()
             }
-        }
 
-        // then
-        assertThat(result).isEqualTo(responseBody)
+            // then
+            assertThat(result).isEqualTo(responseBody)
+        }
     }
 
     @Test
     fun `invokes lambda in case of a dead entry`() {
-        // given
-        val id = 1535
+        runBlocking {
+            // given
+            val id = 1535
 
-        val testAnisearchConfig = object: MetaDataProviderConfig by MetaDataProviderTestConfig {
-            override fun hostname(): Hostname = "localhost"
-            override fun buildAnimeLink(id: AnimeId): URI = URI("http://localhost:$port/anime/$id")
-            override fun buildDataDownloadLink(id: String): URI = buildAnimeLink(id)
-            override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-        }
+            val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
+                override fun hostname(): Hostname = "localhost"
+                override fun buildAnimeLink(id: AnimeId): URI = URI("http://localhost:$port/anime/$id")
+                override fun buildDataDownloadLink(id: String): URI = buildAnimeLink(id)
+                override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
+            }
 
-        val responseBody = "<html><head/><body></body></html>"
+            val responseBody = "<html><head/><body></body></html>"
 
-        serverInstance.stubFor(
-            get(urlPathEqualTo("/anime/$id")).willReturn(
-                aResponse()
-                    .withHeader("Content-Type", "text/html")
-                    .withStatus(404)
-                    .withBody(responseBody)
+            serverInstance.stubFor(
+                get(urlPathEqualTo("/anime/$id")).willReturn(
+                    aResponse()
+                        .withHeader("Content-Type", "text/html")
+                        .withStatus(404)
+                        .withBody(responseBody)
+                )
             )
-        )
 
-        val anisearchDownloader = AnisearchDownloader(testAnisearchConfig)
+            val anisearchDownloader = AnisearchDownloader(testAnisearchConfig)
 
-        var onDeadEntryHasBeenInvoked = false
+            var onDeadEntryHasBeenInvoked = false
 
-        // when
-        val result = runBlocking {
-            anisearchDownloader.download(id.toAnimeId()) {
+            // when
+            val result = anisearchDownloader.download(id.toAnimeId()) {
                 onDeadEntryHasBeenInvoked = true
             }
-        }
 
-        // then
-        assertThat(result).isEmpty()
-        assertThat(onDeadEntryHasBeenInvoked).isTrue()
+            // then
+            assertThat(result).isEmpty()
+            assertThat(onDeadEntryHasBeenInvoked).isTrue()
+        }
     }
 
     @Test

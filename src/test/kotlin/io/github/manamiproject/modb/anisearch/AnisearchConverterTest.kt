@@ -67,7 +67,7 @@ internal class AnisearchConverterTest {
                     override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
-                val testFile = loadTestResource("file_converter_tests/title/no_suffix_for_title.html")
+                val testFile = loadTestResource("file_converter_tests/title/title_not_set_in_jsonld.html")
                 "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
@@ -519,7 +519,7 @@ internal class AnisearchConverterTest {
                 val result = converter.convert(testFile)
 
                 // then
-                assertThat(result.tags).containsExactly("slice of life")
+                assertThat(result.tags).containsExactly("drama")
             }
         }
 
@@ -1620,7 +1620,7 @@ internal class AnisearchConverterTest {
         inner class YearOfPremiereTests {
 
             @Test
-            fun `06 Aug 2021`() {
+            fun `2021-08-06`() {
                 tempDirectory {
                     // given
                     val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
@@ -1630,7 +1630,7 @@ internal class AnisearchConverterTest {
                         override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                     }
 
-                    val testFile = loadTestResource("file_converter_tests/anime_season/year_of_premiere/06-aug-2021.html")
+                    val testFile = loadTestResource("file_converter_tests/anime_season/year_of_premiere/2021-08-06.html")
                     "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchConverter(
@@ -1647,7 +1647,7 @@ internal class AnisearchConverterTest {
             }
 
             @Test
-            fun `12-2021`() {
+            fun `1958-11`() {
                 tempDirectory {
                     // given
                     val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
@@ -1657,7 +1657,7 @@ internal class AnisearchConverterTest {
                         override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                     }
 
-                    val testFile = loadTestResource("file_converter_tests/anime_season/year_of_premiere/12-2021.html")
+                    val testFile = loadTestResource("file_converter_tests/anime_season/year_of_premiere/1958-11.html")
                     "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchConverter(
@@ -1669,12 +1669,12 @@ internal class AnisearchConverterTest {
                     val result = converter.convert(testFile)
 
                     // then
-                    assertThat(result.animeSeason.year).isEqualTo(2021)
+                    assertThat(result.animeSeason.year).isEqualTo(1958)
                 }
             }
 
             @Test
-            fun `2022`() {
+            fun `1991`() {
                 tempDirectory {
                     // given
                     val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
@@ -1684,7 +1684,7 @@ internal class AnisearchConverterTest {
                         override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                     }
 
-                    val testFile = loadTestResource("file_converter_tests/anime_season/year_of_premiere/2022.html")
+                    val testFile = loadTestResource("file_converter_tests/anime_season/year_of_premiere/1991.html")
                     "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchConverter(
@@ -1696,7 +1696,7 @@ internal class AnisearchConverterTest {
                     val result = converter.convert(testFile)
 
                     // then
-                    assertThat(result.animeSeason.year).isEqualTo(2022)
+                    assertThat(result.animeSeason.year).isEqualTo(1991)
                 }
             }
 
@@ -1813,7 +1813,7 @@ internal class AnisearchConverterTest {
 
                 // then
                 assertThat(result.relatedAnime).containsExactly(
-                    URI("https://anisearch.com/anime/15862")
+                    URI("https://anisearch.com/anime/17530")
                 )
             }
         }

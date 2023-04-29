@@ -80,18 +80,17 @@ public class AnisearchConverter(
             return anisearchData.name
         }
 
-        var title = document.select("h1[id=htitle]")
-            .select("span[itemprop=name]")
-            .text()
+        val titleFromMetaData = document.select("meta[property=og:title]")
+            .attr("content")
+            .trim()
+            .replace(" (Anime)", EMPTY)
             .trim()
 
-        if (title.isBlank()) {
-            title = document.select("h1[id=htitle]")
-                .text()
-                .trim()
+        if (titleFromMetaData.isNotBlank()) {
+            return titleFromMetaData
         }
 
-        return title
+        throw IllegalStateException("Unable to extract title for [anisearchData=$anisearchData]")
     }
 
     private fun extractEpisodes(anisearchData: AnisearchData): Episodes = anisearchData.episodes
@@ -246,7 +245,7 @@ private data class AnisearchData(
     val name: String = EMPTY,
     val url: String = EMPTY,
     val image: String = EMPTY,
-    val numberOfEpisodes: Any = EMPTY, // they mess up the type. They use both strings and integer for episodes
+    val numberOfEpisodes: Any? = EMPTY, // they mess up the type. They use both strings and integer for episodes
     val startDate: String = EMPTY,
 ) {
     val episodes: Int
@@ -256,11 +255,12 @@ private data class AnisearchData(
                     val trimmedValue = numberOfEpisodes.trim()
                     when {
                         trimmedValue.isInt() -> numberOfEpisodes.toInt()
-                        else -> 0
+                        else -> 1
                     }
                 }
                 is Int -> numberOfEpisodes
                 is Double -> numberOfEpisodes.toInt()
+                null -> 1
                 else -> throw IllegalStateException("Unknown type for numberOfEpisodes: [${numberOfEpisodes.javaClass}]")
             }
         }

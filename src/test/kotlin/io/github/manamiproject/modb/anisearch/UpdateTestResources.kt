@@ -1,8 +1,8 @@
 package io.github.manamiproject.modb.anisearch
 
+import io.github.manamiproject.modb.core.coroutines.CoroutineManager.runCoroutine
 import io.github.manamiproject.modb.core.extensions.writeToFile
 import io.github.manamiproject.modb.test.testResource
-import kotlinx.coroutines.runBlocking
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -10,7 +10,7 @@ internal fun main() {
     val downloader = AnisearchDownloader(AnisearchConfig)
     val relationsDownloader = AnisearchDownloader(AnisearchRelationsConfig)
     
-    runBlocking {
+    runCoroutine {
         downloader.download("14628").writeToFile(resourceFile("file_converter_tests/anime_season/season/01.html"))
         downloader.download("14967").writeToFile(resourceFile("file_converter_tests/anime_season/season/02.html"))
         downloader.download("16251").writeToFile(resourceFile("file_converter_tests/anime_season/season/03.html"))
@@ -26,9 +26,9 @@ internal fun main() {
         downloader.download("16275").writeToFile(resourceFile("file_converter_tests/anime_season/season/unknown.html"))
         downloader.download("17467").writeToFile(resourceFile("file_converter_tests/anime_season/season/year_only.html"))
     
-        downloader.download("15890").writeToFile(resourceFile("file_converter_tests/anime_season/year_of_premiere/06-aug-2021.html"))
-        downloader.download("16264").writeToFile(resourceFile("file_converter_tests/anime_season/year_of_premiere/12-2021.html"))
-        downloader.download("8504").writeToFile(resourceFile("file_converter_tests/anime_season/year_of_premiere/2022.html"))
+        downloader.download("15890").writeToFile(resourceFile("file_converter_tests/anime_season/year_of_premiere/2021-08-06.html"))
+        downloader.download("5976").writeToFile(resourceFile("file_converter_tests/anime_season/year_of_premiere/1958-11.html"))
+        downloader.download("168").writeToFile(resourceFile("file_converter_tests/anime_season/year_of_premiere/1991.html"))
         downloader.download("16275").writeToFile(resourceFile("file_converter_tests/anime_season/year_of_premiere/unknown.html"))
     
         downloader.download("6247").writeToFile(resourceFile("file_converter_tests/duration/1_hour.html"))
@@ -58,17 +58,17 @@ internal fun main() {
         relationsDownloader.download("14844").writeToFile(resourceFile("file_converter_tests/related_anime/no_related_anime_but_adaption.html"))
         downloader.download("14844").writeToFile(resourceFile("file_converter_tests/related_anime/no_related_anime_but_adaption_main.html"))
         downloader.download("4942").writeToFile(resourceFile("file_converter_tests/related_anime/related_anime_file_missing_main.html"))
-        relationsDownloader.download("14254").writeToFile(resourceFile("file_converter_tests/related_anime/single_related_anime.html"))
-        downloader.download("14254").writeToFile(resourceFile("file_converter_tests/related_anime/single_related_anime_main.html"))
+        relationsDownloader.download("16777").writeToFile(resourceFile("file_converter_tests/related_anime/single_related_anime.html"))
+        downloader.download("16777").writeToFile(resourceFile("file_converter_tests/related_anime/single_related_anime_main.html"))
     
         downloader.download("3633").writeToFile(resourceFile("file_converter_tests/sources/3633.html"))
-    
-        downloader.download("12433").writeToFile(resourceFile("file_converter_tests/status/on_hold.html"))
+
+        downloader.download("16925").writeToFile(resourceFile("file_converter_tests/status/on_hold.html"))
         downloader.download("12433").writeToFile(resourceFile("file_converter_tests/status/aborted.html"))
         downloader.download("3633").writeToFile(resourceFile("file_converter_tests/status/completed.html"))
-        downloader.download("13540").writeToFile(resourceFile("file_converter_tests/status/completed_in_japan_upcoming_elsewhere.html"))
+        downloader.download("6222").writeToFile(resourceFile("file_converter_tests/status/completed_in_japan_upcoming_elsewhere.html"))
         downloader.download("14494").writeToFile(resourceFile("file_converter_tests/status/no_status.html"))
-        downloader.download("16777").writeToFile(resourceFile("file_converter_tests/status/ongoing.html"))
+        downloader.download("1721").writeToFile(resourceFile("file_converter_tests/status/ongoing.html"))
         downloader.download("12224").writeToFile(resourceFile("file_converter_tests/status/upcoming.html"))
     
         downloader.download("1958").writeToFile(resourceFile("file_converter_tests/synonyms/multiple_synonyms.html"))
@@ -88,9 +88,9 @@ internal fun main() {
     
         downloader.download("15073").writeToFile(resourceFile("file_converter_tests/tags/multiple_tags.html"))
         downloader.download("17467").writeToFile(resourceFile("file_converter_tests/tags/no_tags.html"))
-        downloader.download("12954").writeToFile(resourceFile("file_converter_tests/tags/one_tag.html"))
+        downloader.download("613").writeToFile(resourceFile("file_converter_tests/tags/one_tag.html"))
     
-        downloader.download("4410").writeToFile(resourceFile("file_converter_tests/title/no_suffix_for_title.html"))
+        downloader.download("4410").writeToFile(resourceFile("file_converter_tests/title/title_not_set_in_jsonld.html"))
         downloader.download("15159").writeToFile(resourceFile("file_converter_tests/title/special_chars.html"))
     
         downloader.download("10454").writeToFile(resourceFile("file_converter_tests/type/bonus.html"))

@@ -145,7 +145,7 @@ internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by W
                 .willReturn(
                     aResponse()
                         .withHeader("Content-Type", "text/html")
-                        .withStatus(502)
+                        .withStatus(400)
                         .withBody("<html></html>")
                 )
         )
@@ -160,6 +160,6 @@ internal class AnisearchDownloaderTest : MockServerTestCase<WireMockServer> by W
         }
 
         // then
-        assertThat(result).hasMessage("Unable to determine the correct case for [anisearchId=$id], [responseCode=502]")
+        assertThat(result).hasMessage("Unable to determine the correct case for [anisearchId=$id], [responseCode=400]")
     }
 }

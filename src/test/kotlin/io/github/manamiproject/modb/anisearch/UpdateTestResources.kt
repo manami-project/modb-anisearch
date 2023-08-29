@@ -103,6 +103,8 @@ internal fun main() {
         downloader.download("13250").writeToFile(resourceFile("file_converter_tests/type/tv-special.html"))
         downloader.download("17467").writeToFile(resourceFile("file_converter_tests/type/unknown.html"))
         downloader.download("14935").writeToFile(resourceFile("file_converter_tests/type/web.html"))
+
+        println("Done")
     }
 }
 

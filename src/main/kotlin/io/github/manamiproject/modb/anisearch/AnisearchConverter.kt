@@ -1,7 +1,7 @@
 package io.github.manamiproject.modb.anisearch
 
 import io.github.manamiproject.modb.anisearch.extensions.isInt
-import io.github.manamiproject.modb.core.Json
+import io.github.manamiproject.modb.core.json.Json
 import io.github.manamiproject.modb.core.config.AnimeId
 import io.github.manamiproject.modb.core.config.MetaDataProviderConfig
 import io.github.manamiproject.modb.core.converter.AnimeConverter
@@ -62,7 +62,7 @@ public class AnisearchConverter(
         ).apply {
             addSources(sources)
             addSynonyms(extractSynonyms(document))
-            addRelations(extractRelatedAnime(id))
+            addRelatedAnime(extractRelatedAnime(id))
             addTags(extractTags(document))
         }
     }

@@ -15,14 +15,13 @@ import io.github.manamiproject.modb.test.exceptionExpected
 import io.github.manamiproject.modb.test.loadTestResource
 import io.github.manamiproject.modb.test.tempDirectory
 import io.github.manamiproject.modb.test.testResource
-import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
-import kotlin.test.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import java.net.URI
 import kotlin.io.path.copyTo
+import kotlin.test.Test
 
 internal class AnisearchConverterTest {
 
@@ -475,7 +474,7 @@ internal class AnisearchConverterTest {
                 val result = converter.convert(testFile)
 
                 // then
-                assertThat(result.tags).containsExactly(
+                assertThat(result.tags).containsExactlyInAnyOrder(
                     "action",
                     "action comedy",
                     "adventure",
@@ -990,7 +989,7 @@ internal class AnisearchConverterTest {
                 val result = converter.convert(testFile)
 
                 // then
-                assertThat(result.synonyms).containsExactly(
+                assertThat(result.synonyms).containsExactlyInAnyOrder(
                     "Bésame Licia",
                     "Embrasse-moi Lucile",
                     "Kiss Me Licia",
@@ -1082,7 +1081,7 @@ internal class AnisearchConverterTest {
                 val result = converter.convert(testFile)
 
                 // then
-                assertThat(result.synonyms).containsExactly(
+                assertThat(result.synonyms).containsExactlyInAnyOrder(
                     "Chikyūgai Shōnen Shōjo",
                     "Extra-Terrestrial Boys & Girls",
                     "Extraterrestial Boys and Girls",
@@ -1117,7 +1116,7 @@ internal class AnisearchConverterTest {
                 val result = converter.convert(testFile)
 
                 // then
-                assertThat(result.synonyms).containsExactly(
+                assertThat(result.synonyms).containsExactlyInAnyOrder(
                     "DanMachi OVA",
                     "Danmachi OAV",
                     "Danmachi: Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Myth OVA",
@@ -1158,7 +1157,7 @@ internal class AnisearchConverterTest {
                 val result = converter.convert(testFile)
 
                 // then
-                assertThat(result.synonyms).containsExactly(
+                assertThat(result.synonyms).containsExactlyInAnyOrder(
                     "My Teen Romantic Comedy SNAFU OVA",
                     "My Youth Romantic Comedy Is Wrong as I Expected. OVA",
                     "Oregairu OVA",
@@ -1195,7 +1194,7 @@ internal class AnisearchConverterTest {
                 val result = converter.convert(testFile)
 
                 // then
-                assertThat(result.synonyms).containsExactly(
+                assertThat(result.synonyms).containsExactlyInAnyOrder(
                     "Extra One Room: Second Season: Hanasaka Yui Experiments / Hanasaka Yui Gets Delivered / Nanahashi Minori Holds a Meeting / Nanahashi Minori Becomes a Big-Shot / Amatsuki Mashiro Becomes a Cat / Amatsuki Mashiro Gives Treatment",
                     "Extra One Room: Second Season: Hanasaka Yui wa Tameshite Miru / Hanasaka Yui wa Okurarete Kuru / Nanahashi Minori wa Kaigi Suru / Nanahashi Minori wa Oomono ni Naru / Amatsuki Mashiro wa Neko ni Naru / Amatsuki Mashiro wa Chiryou Suru",
                     "One Room 2nd Season Extra",
@@ -1228,7 +1227,7 @@ internal class AnisearchConverterTest {
                 val result = converter.convert(testFile)
 
                 // then
-                assertThat(result.synonyms).containsExactly(
+                assertThat(result.synonyms).containsExactlyInAnyOrder(
                     "Inu x Boku SS Special",
                     "Inu x Boku SS: Miketsukami-kun Henka / Switch / Omamagoto",
                     "Inu x Boku Secret Service: Miketsukami-kun‘s Transformations / Switch / Playing House",

@@ -8,6 +8,7 @@ import io.github.manamiproject.modb.core.models.Anime
 import io.github.manamiproject.modb.core.models.Anime.Status.*
 import io.github.manamiproject.modb.core.models.Anime.Type.*
 import io.github.manamiproject.modb.core.models.Anime.Type.UNKNOWN
+import io.github.manamiproject.modb.core.models.AnimeSeason
 import io.github.manamiproject.modb.core.models.AnimeSeason.Season.*
 import io.github.manamiproject.modb.core.models.Duration
 import io.github.manamiproject.modb.core.models.Duration.TimeUnit.*
@@ -16,12 +17,19 @@ import io.github.manamiproject.modb.test.loadTestResource
 import io.github.manamiproject.modb.test.tempDirectory
 import io.github.manamiproject.modb.test.testResource
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.groups.Tuple
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import org.junit.jupiter.params.provider.ValueSource
 import java.net.URI
 import kotlin.io.path.copyTo
 import kotlin.test.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
+import org.junit.jupiter.params.provider.CsvSource
+
 
 internal class AnisearchConverterTest {
 
@@ -36,11 +44,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/title/special_chars.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("15159.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -63,11 +70,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/title/title_not_set_in_jsonld.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("4410.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -94,11 +100,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/picture_and_thumbnail/neither_picture_nor_thumbnail.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("15237.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -122,11 +127,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/picture_and_thumbnail/picture_and_thumbnail_available.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("3633.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -147,18 +151,17 @@ internal class AnisearchConverterTest {
     inner class SourcesTests {
 
         @Test
-        fun `extract id 16498`() {
+        fun `extract id 3633`() {
             tempDirectory {
                 // given
                 val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/sources/3633.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("3633.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -185,11 +188,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/type/bonus.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("10454.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -212,11 +214,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/type/cm.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("12290.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -239,11 +240,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/type/movie.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("9981.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -266,11 +266,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/type/music-video.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("9830.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -293,11 +292,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/type/other.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("16289.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -320,11 +318,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/type/ova.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("3627.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -347,11 +344,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/type/tv-series.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("4946.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -374,11 +370,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/type/tv-special.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("13250.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -401,11 +396,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/type/unknown.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("17467.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -428,11 +422,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/type/web.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("14935.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -459,11 +452,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/tags/multiple_tags.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("15073.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -503,11 +495,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/tags/one_tag.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("613.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -530,11 +521,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/tags/no_tags.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("17467.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -561,11 +551,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/episodes/unknown.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("16578.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -588,11 +577,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/episodes/1.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("9981.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -615,11 +603,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/episodes/10.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("3135.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -642,11 +629,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/episodes/100.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("4138.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -669,11 +655,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/episodes/1818.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("5801.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -696,11 +681,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/episodes/type-is-double.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("16804.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -727,11 +711,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/duration/1_hour.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("6247.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -754,11 +737,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/duration/1_minute.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("11051.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -781,11 +763,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/duration/2_hours.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("6889.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -808,11 +789,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/duration/24_minutes_per_episode.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("14844.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -835,11 +815,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/duration/63_minutes_by_6_episodes.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("7192.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -862,11 +841,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/duration/70_minutes.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("7163.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -889,11 +867,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/duration/134_minutes.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("602.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -916,11 +893,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/duration/episodes_and_duration_unknown.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("16711.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -943,11 +919,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/duration/episodes_known_duration_unknown.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("17039.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -974,11 +949,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/synonyms/multiple_synonyms.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("1958.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1010,11 +984,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/synonyms/no_synonyms.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("16260.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1037,11 +1010,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/synonyms/single_synonym.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("14456.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1066,11 +1038,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/synonyms/romanji_alteration.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("13631.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1101,11 +1072,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/synonyms/hidden_synonyms_11197.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("11197.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1131,6 +1101,22 @@ internal class AnisearchConverterTest {
                     "Is It Wrong to Try to Pick Up Girls in a Dungeon? Is It Wrong to Try to Soak in a Hot Spring in a Dungeon?",
                     "ダンジョンに出会いを求めるのは間違っているだろうか FAMILIA MYTH ダンジョンに温泉を求めるのは間違っているだろうか",
                 )
+                setOf(
+                    "Danmachi OAV",
+                    "Danmachi: ¿qué Tiene De Malo Intentar Buscar Unos Baños Termales En Una Mazmorra?",
+                    "Danmachi: Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Myth OVA",
+                    "Danmachi: Is It Wrong to Try to Pick Up Girls in a Dungeon? Ist es falsch, im Dungeon in heißen Quellen zu baden?",
+                    "Dungeon ni Deai o Motomeru no wa Machigatte Iru Darou ka: Familia Myth - Dungeon ni Onsen o Motomeru no wa Machigatte Iru Darou ka",
+                    "Dungeon ni Deai o Motomeru no wa Machigatte Iru Darō ka: Familia Myth - Dungeon ni Onsen o Motomeru no wa Machigatte Iru Darō ka",
+                    "Dungeon ni Deai o Motomeru no wa Machigatte Iru Darouka: Familia Myth OVA",
+                    "Dungeon ni Deai wo Motomeru no wa Machigatte Iru Darouka: Familia Myth OVA",
+                    "Dungeon ni Deai wo Motomeru no wa Machigatte Iru Darou ka: Familia Myth - Dungeon ni Onsen wo Motomeru no wa Machigatte Iru Darou ka",
+                    "Is It Wrong to Try to Pick Up Girls in a Dungeon? Is It Wrong to Expect a Hot Spring in a Dungeon?",
+                    "Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Myth OVA",
+                    "DanMachi OVA",
+                    "Is It Wrong to Try to Pick Up Girls in a Dungeon? Is It Wrong to Try to Soak in a Hot Spring in a Dungeon?",
+                    "ダンジョンに出会いを求めるのは間違っているだろうか FAMILIA MYTH ダンジョンに温泉を求めるのは間違っているだろうか",
+                )
             }
         }
 
@@ -1142,11 +1128,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/synonyms/hidden_synonyms_8724.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("8724.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1179,11 +1164,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/synonyms/synonyms_contain_named_parts.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("15599.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1212,11 +1196,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/synonyms/hidden_synonyms_and_named_parts.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("8093.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1251,11 +1234,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/synonyms/italic.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("17015.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1286,11 +1268,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/status/aborted.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("12433.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1313,11 +1294,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/status/on_hold.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("16925.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1340,11 +1320,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/status/no_status.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("14494.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1367,11 +1346,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/status/completed.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("3633.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1394,11 +1372,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/status/completed_in_japan_upcoming_elsewhere.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("6222.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1421,11 +1398,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/status/ongoing.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("1721.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1448,11 +1424,10 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/status/upcoming.html")
-                "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                "<html></html>".writeToFile(tempDir.resolve("12224.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1475,19 +1450,22 @@ internal class AnisearchConverterTest {
         inner class SeasonTests {
 
             @ParameterizedTest
-            @ValueSource(strings = ["01", "02", "03"])
-            fun `'jan', 'feb', and 'mar' are mapped to WINTER`(fileName: String) {
+            @CsvSource(value = [
+                "01, 14628",
+                "02, 14967",
+                "03, 16251",
+            ])
+            fun `'jan', 'feb', and 'mar' are mapped to WINTER`(fileName: String, animeId: AnimeId) {
                 tempDirectory {
                     // given
                     val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
                         override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                         override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                         override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                        override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                     }
 
                     val testFile = loadTestResource<String>("file_converter_tests/anime_season/season/$fileName.html")
-                    "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                    "<html></html>".writeToFile(tempDir.resolve("$animeId.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchConverter(
                         config = testAnisearchConfig,
@@ -1503,19 +1481,22 @@ internal class AnisearchConverterTest {
             }
 
             @ParameterizedTest
-            @ValueSource(strings = ["04", "05", "06"])
-            fun `'apr', 'may' and 'jul' are mapped to SPRING`(fileName: String) {
+            @CsvSource(value = [
+                "04, 14508",
+                "05, 15264",
+                "06, 14935",
+            ])
+            fun `'apr', 'may' and 'jul' are mapped to SPRING`(fileName: String, animeId: AnimeId) {
                 tempDirectory {
                     // given
                     val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
                         override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                         override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                         override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                        override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                     }
 
                     val testFile = loadTestResource<String>("file_converter_tests/anime_season/season/$fileName.html")
-                    "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                    "<html></html>".writeToFile(tempDir.resolve("$animeId.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchConverter(
                         config = testAnisearchConfig,
@@ -1531,19 +1512,22 @@ internal class AnisearchConverterTest {
             }
 
             @ParameterizedTest
-            @ValueSource(strings = ["07", "08", "09"])
-            fun `'jul', 'aug' and 'sep' are mapped to SUMMER`(fileName: String) {
+            @CsvSource(value = [
+                "07, 14816",
+                "08, 16401",
+                "09, 16401",
+            ])
+            fun `'jul', 'aug' and 'sep' are mapped to SUMMER`(fileName: String, animeId: AnimeId) {
                 tempDirectory {
                     // given
                     val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
                         override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                         override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                         override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                        override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                     }
 
                     val testFile = loadTestResource<String>("file_converter_tests/anime_season/season/$fileName.html")
-                    "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                    "<html></html>".writeToFile(tempDir.resolve("$animeId.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchConverter(
                         config = testAnisearchConfig,
@@ -1559,19 +1543,22 @@ internal class AnisearchConverterTest {
             }
 
             @ParameterizedTest
-            @ValueSource(strings = ["10", "11", "12"])
-            fun `'oct', 'nov' and 'dec' are mapped to SUMMER`(fileName: String) {
+            @CsvSource(value = [
+                "10, 15606",
+                "11, 15042",
+                "12, 14484",
+            ])
+            fun `'oct', 'nov' and 'dec' are mapped to SUMMER`(fileName: String, animeId: AnimeId) {
                 tempDirectory {
                     // given
                     val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
                         override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                         override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                         override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                        override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                     }
 
                     val testFile = loadTestResource<String>("file_converter_tests/anime_season/season/$fileName.html")
-                    "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                    "<html></html>".writeToFile(tempDir.resolve("$animeId.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchConverter(
                         config = testAnisearchConfig,
@@ -1587,19 +1574,21 @@ internal class AnisearchConverterTest {
             }
 
             @ParameterizedTest
-            @ValueSource(strings = ["year_only", "unknown"])
-            fun `if the month cannot be determined use UNDEFINED`(fileName: String) {
+            @CsvSource(value = [
+                "year_only, 17467",
+                "unknown, 16275",
+            ])
+            fun `if the month cannot be determined use UNDEFINED`(fileName: String, animeId: AnimeId) {
                 tempDirectory {
                     // given
                     val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
                         override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                         override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                         override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                        override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                     }
 
                     val testFile = loadTestResource<String>("file_converter_tests/anime_season/season/$fileName.html")
-                    "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                    "<html></html>".writeToFile(tempDir.resolve("$animeId.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchConverter(
                         config = testAnisearchConfig,
@@ -1626,11 +1615,10 @@ internal class AnisearchConverterTest {
                         override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                         override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                         override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                        override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                     }
 
                     val testFile = loadTestResource<String>("file_converter_tests/anime_season/year_of_premiere/2021-08-06.html")
-                    "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                    "<html></html>".writeToFile(tempDir.resolve("15890.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchConverter(
                         config = testAnisearchConfig,
@@ -1653,11 +1641,10 @@ internal class AnisearchConverterTest {
                         override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                         override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                         override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                        override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                     }
 
                     val testFile = loadTestResource<String>("file_converter_tests/anime_season/year_of_premiere/1958-11.html")
-                    "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                    "<html></html>".writeToFile(tempDir.resolve("5976.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchConverter(
                         config = testAnisearchConfig,
@@ -1680,11 +1667,10 @@ internal class AnisearchConverterTest {
                         override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                         override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                         override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                        override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                     }
 
                     val testFile = loadTestResource<String>("file_converter_tests/anime_season/year_of_premiere/1991.html")
-                    "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                    "<html></html>".writeToFile(tempDir.resolve("168.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchConverter(
                         config = testAnisearchConfig,
@@ -1707,11 +1693,10 @@ internal class AnisearchConverterTest {
                         override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                         override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                         override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                        override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                     }
 
                     val testFile = loadTestResource<String>("file_converter_tests/anime_season/year_of_premiere/unknown.html")
-                    "<html></html>".writeToFile(tempDir.resolve("test-id.${testAnisearchConfig.fileSuffix()}"))
+                    "<html></html>".writeToFile(tempDir.resolve("16275.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchConverter(
                         config = testAnisearchConfig,
@@ -1739,7 +1724,6 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "14844"
                 }
 
                 val main = loadTestResource<String>("file_converter_tests/related_anime/no_related_anime_but_adaption_main.html")
@@ -1767,7 +1751,6 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "10941"
                 }
 
                 val main = loadTestResource<String>("file_converter_tests/related_anime/no_related_anime_main.html")
@@ -1795,12 +1778,11 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "14254"
                 }
 
                 val main = loadTestResource<String>("file_converter_tests/related_anime/single_related_anime_main.html")
                 testResource("file_converter_tests/related_anime/single_related_anime.html")
-                    .copyTo(tempDir.resolve("14254.html"))
+                    .copyTo(tempDir.resolve("16777.html"))
 
                 val converter = AnisearchConverter(
                     config = testAnisearchConfig,
@@ -1825,7 +1807,6 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "4942"
                 }
 
                 val main = loadTestResource<String>("file_converter_tests/related_anime/multiple_related_anime_main.html")
@@ -1856,7 +1837,6 @@ internal class AnisearchConverterTest {
                     override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
                     override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
                     override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
-                    override fun extractAnimeId(uri: URI): AnimeId = "test-id"
                 }
 
                 val testFile = loadTestResource<String>("file_converter_tests/related_anime/related_anime_file_missing_main.html")
@@ -1872,7 +1852,7 @@ internal class AnisearchConverterTest {
                 }
     
                 // then
-                assertThat(result).hasMessage("Relations file is missing")
+                assertThat(result).hasMessage("Relations file is missing for [4942].")
             }
         }
     }

@@ -84,7 +84,7 @@ public class AnisearchAnimeConverter(
     private fun extractTitle(jsonldData: ExtractionResult, data: ExtractionResult): Title {
         return jsonldData.stringOrDefault("title").ifBlank { data.stringOrDefault("title") }
             .trim()
-            .replace(" (Anime)", EMPTY)
+            .remove(" (Anime)")
             .trim()
     }
 
@@ -124,7 +124,7 @@ public class AnisearchAnimeConverter(
 
     private fun generatePicture(picture: URI): URI {
         val value = picture.toString()
-            .replace("/full", EMPTY)
+            .remove("/full")
             .replace(".webp", "_300.webp")
         return URI(value)
     }
@@ -171,7 +171,7 @@ public class AnisearchAnimeConverter(
 
     private fun extractAnimeSeason(jsonldData: ExtractionResult): AnimeSeason {
         val date = jsonldData.stringOrDefault("year")
-        if (date.isBlank()) {
+        if (date.eitherNullOrBlank()) {
             return AnimeSeason()
         }
 
@@ -240,7 +240,7 @@ public class AnisearchAnimeConverter(
             hashSetOf()
         } else {
             relatedAnimeData.listNotNull<String>("relatedAnime")
-                .map { it.replace("anime/", EMPTY) }
+                .map { it.remove("anime/") }
                 .map { it.substring(0, it.indexOf(',')) }
                 .map { config.buildAnimeLink(it) }
                 .toHashSet()

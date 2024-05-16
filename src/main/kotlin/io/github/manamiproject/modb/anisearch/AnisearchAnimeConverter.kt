@@ -26,7 +26,7 @@ import java.net.URI
  * @param relationsDir Directory containing the raw files for the related anime.
  * @throws IllegalArgumentException if [relationsDir] doesn't exist or is not a directory.
  */
-public class AnisearchConverter(
+public class AnisearchAnimeConverter(
     private val config: MetaDataProviderConfig = AnisearchConfig,
     private val xmlExtractor: DataExtractor = XmlDataExtractor,
     private val jsonExtractor: DataExtractor = JsonDataExtractor,

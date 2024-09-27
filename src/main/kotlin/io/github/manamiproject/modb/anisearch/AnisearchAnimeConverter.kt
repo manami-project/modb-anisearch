@@ -22,12 +22,12 @@ import java.net.URI
  * Converts raw data to an [Anime].
  * Requires raw HTML.
  * @since 1.0.0
- * @param config Configuration for converting data.
+ * @param metaDataProviderConfig Configuration for converting data.
  * @param relationsDir Directory containing the raw files for the related anime.
  * @throws IllegalArgumentException if [relationsDir] doesn't exist or is not a directory.
  */
 public class AnisearchAnimeConverter(
-    private val config: MetaDataProviderConfig = AnisearchConfig,
+    private val metaDataProviderConfig: MetaDataProviderConfig = AnisearchConfig,
     private val xmlExtractor: DataExtractor = XmlDataExtractor,
     private val jsonExtractor: DataExtractor = JsonDataExtractor,
     private val relationsDir: Directory,
@@ -194,7 +194,7 @@ public class AnisearchAnimeConverter(
     }
 
     private fun extractSourcesEntry(data: ExtractionResult): HashSet<URI> {
-        return hashSetOf(config.buildAnimeLink(data.string("source")))
+        return hashSetOf(metaDataProviderConfig.buildAnimeLink(data.string("source")))
     }
 
     private fun extractSynonyms(data: ExtractionResult): HashSet<Title> {
@@ -228,7 +228,7 @@ public class AnisearchAnimeConverter(
 
     private suspend fun extractRelatedAnime(data: ExtractionResult): HashSet<URI> = withContext(LIMITED_CPU) {
         val id = data.string("source")
-        val relationsFile = relationsDir.resolve("$id.${config.fileSuffix()}")
+        val relationsFile = relationsDir.resolve("$id.${metaDataProviderConfig.fileSuffix()}")
 
         check(relationsFile.regularFileExists()) { "Relations file is missing for [$id]." }
 
@@ -242,7 +242,7 @@ public class AnisearchAnimeConverter(
             relatedAnimeData.listNotNull<String>("relatedAnime")
                 .map { it.remove("anime/") }
                 .map { it.substring(0, it.indexOf(',')) }
-                .map { config.buildAnimeLink(it) }
+                .map { metaDataProviderConfig.buildAnimeLink(it) }
                 .toHashSet()
         }
     }

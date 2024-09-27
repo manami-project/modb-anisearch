@@ -43,7 +43,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("15159.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -69,7 +69,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("4410.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -99,7 +99,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("15237.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -126,7 +126,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("3633.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -157,7 +157,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("3633.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -187,7 +187,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("10454.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -213,7 +213,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("12290.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -239,7 +239,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("9981.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -265,7 +265,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("9830.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -291,7 +291,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("16289.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -317,7 +317,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("3627.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -343,7 +343,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("4946.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -369,7 +369,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("13250.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -395,7 +395,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("17467.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -421,7 +421,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("14935.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -451,7 +451,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("15073.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -494,7 +494,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("613.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -520,7 +520,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("17467.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -550,7 +550,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("16578.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -576,7 +576,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("9981.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -602,7 +602,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("3135.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -628,7 +628,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("4138.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -654,7 +654,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("5801.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -680,7 +680,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("16804.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -710,7 +710,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("6247.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -736,7 +736,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("11051.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -762,7 +762,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("6889.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -788,7 +788,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("14844.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -814,7 +814,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("7192.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -840,7 +840,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("7163.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -866,7 +866,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("602.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -892,7 +892,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("16711.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -918,7 +918,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("17039.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -948,7 +948,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("1958.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -983,7 +983,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("16260.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1009,7 +1009,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("14456.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1037,7 +1037,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("13631.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1071,7 +1071,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("11197.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1127,7 +1127,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("8724.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1163,7 +1163,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("15599.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1195,7 +1195,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("8093.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1233,7 +1233,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("17015.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1267,7 +1267,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("12433.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1293,7 +1293,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("16925.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1319,7 +1319,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("14494.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1345,7 +1345,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("3633.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1371,7 +1371,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("6222.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1397,7 +1397,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("1721.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1423,7 +1423,7 @@ internal class AnisearchAnimeConverterTest {
                 "<html></html>".writeToFile(tempDir.resolve("12224.${testAnisearchConfig.fileSuffix()}"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1461,7 +1461,7 @@ internal class AnisearchAnimeConverterTest {
                     "<html></html>".writeToFile(tempDir.resolve("$animeId.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchAnimeConverter(
-                        config = testAnisearchConfig,
+                        metaDataProviderConfig = testAnisearchConfig,
                         relationsDir = tempDir,
                     )
 
@@ -1492,7 +1492,7 @@ internal class AnisearchAnimeConverterTest {
                     "<html></html>".writeToFile(tempDir.resolve("$animeId.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchAnimeConverter(
-                        config = testAnisearchConfig,
+                        metaDataProviderConfig = testAnisearchConfig,
                         relationsDir = tempDir,
                     )
 
@@ -1523,7 +1523,7 @@ internal class AnisearchAnimeConverterTest {
                     "<html></html>".writeToFile(tempDir.resolve("$animeId.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchAnimeConverter(
-                        config = testAnisearchConfig,
+                        metaDataProviderConfig = testAnisearchConfig,
                         relationsDir = tempDir,
                     )
 
@@ -1554,7 +1554,7 @@ internal class AnisearchAnimeConverterTest {
                     "<html></html>".writeToFile(tempDir.resolve("$animeId.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchAnimeConverter(
-                        config = testAnisearchConfig,
+                        metaDataProviderConfig = testAnisearchConfig,
                         relationsDir = tempDir,
                     )
 
@@ -1584,7 +1584,7 @@ internal class AnisearchAnimeConverterTest {
                     "<html></html>".writeToFile(tempDir.resolve("$animeId.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchAnimeConverter(
-                        config = testAnisearchConfig,
+                        metaDataProviderConfig = testAnisearchConfig,
                         relationsDir = tempDir,
                     )
 
@@ -1614,7 +1614,7 @@ internal class AnisearchAnimeConverterTest {
                     "<html></html>".writeToFile(tempDir.resolve("15890.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchAnimeConverter(
-                        config = testAnisearchConfig,
+                        metaDataProviderConfig = testAnisearchConfig,
                         relationsDir = tempDir,
                     )
 
@@ -1640,7 +1640,7 @@ internal class AnisearchAnimeConverterTest {
                     "<html></html>".writeToFile(tempDir.resolve("5976.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchAnimeConverter(
-                        config = testAnisearchConfig,
+                        metaDataProviderConfig = testAnisearchConfig,
                         relationsDir = tempDir,
                     )
 
@@ -1666,7 +1666,7 @@ internal class AnisearchAnimeConverterTest {
                     "<html></html>".writeToFile(tempDir.resolve("168.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchAnimeConverter(
-                        config = testAnisearchConfig,
+                        metaDataProviderConfig = testAnisearchConfig,
                         relationsDir = tempDir,
                     )
 
@@ -1692,7 +1692,7 @@ internal class AnisearchAnimeConverterTest {
                     "<html></html>".writeToFile(tempDir.resolve("16275.${testAnisearchConfig.fileSuffix()}"))
 
                     val converter = AnisearchAnimeConverter(
-                        config = testAnisearchConfig,
+                        metaDataProviderConfig = testAnisearchConfig,
                         relationsDir = tempDir,
                     )
 
@@ -1724,7 +1724,7 @@ internal class AnisearchAnimeConverterTest {
                     .copyTo(tempDir.resolve("14844.html"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1751,7 +1751,7 @@ internal class AnisearchAnimeConverterTest {
                     .copyTo(tempDir.resolve("10941.html"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1778,7 +1778,7 @@ internal class AnisearchAnimeConverterTest {
                     .copyTo(tempDir.resolve("16777.html"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1807,7 +1807,7 @@ internal class AnisearchAnimeConverterTest {
                     .copyTo(tempDir.resolve("4942.html"))
 
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
 
@@ -1835,7 +1835,7 @@ internal class AnisearchAnimeConverterTest {
                 val testFile = loadTestResource<String>("file_converter_tests/related_anime/related_anime_file_missing_main.html")
     
                 val converter = AnisearchAnimeConverter(
-                    config = testAnisearchConfig,
+                    metaDataProviderConfig = testAnisearchConfig,
                     relationsDir = tempDir,
                 )
     

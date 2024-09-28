@@ -1849,4 +1849,31 @@ internal class AnisearchAnimeConverterTest {
             }
         }
     }
+
+    @Nested
+    inner class ConstructorTests {
+
+        @Test
+        fun `throws exception if relationsDir doesn't exist`() {
+            tempDirectory {
+                // given
+                val testAnisearchConfig = object : MetaDataProviderConfig by MetaDataProviderTestConfig {
+                    override fun buildAnimeLink(id: AnimeId): URI = AnisearchConfig.buildAnimeLink(id)
+                    override fun buildDataDownloadLink(id: String): URI = AnisearchConfig.buildDataDownloadLink(id)
+                    override fun fileSuffix(): FileSuffix = AnisearchConfig.fileSuffix()
+                }
+
+                // when
+                val result = exceptionExpected<IllegalArgumentException> {
+                    AnisearchAnimeConverter(
+                        metaDataProviderConfig = testAnisearchConfig,
+                        relationsDir = tempDir.resolve("relations"),
+                    )
+                }
+
+                // then
+                assertThat(result).hasMessage("Directory for relations [${tempDir.resolve("relations")}] does not exist or is not a directory.")
+            }
+        }
+    }
 }
